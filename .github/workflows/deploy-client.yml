@@ -15,7 +15,7 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          cd client/lccode 
+          cd client 
           npm ci
           npm run build
 
@@ -26,6 +26,6 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           channelId: live
           projectId: lccode-fyp
-          entryPoint: lccode
+          entryPoint: client
           expires: 7d
           firebaseToolsVersion: latest
