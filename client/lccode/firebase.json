@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/lccode",
+    "public": "dist/lccode/",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
