@@ -16,3 +16,24 @@
   font-weight: normal;
   font-style: normal;
 }
+
+:root {
+  --primary-color-green: #12a588;
+  --primary-color-green-light: #13bd95;
+
+  --secondary-color-dark-darkest: #333333;
+  --secondary-color-dark-mid: #4f4f4f;
+  --secondary-color-dark-light: #a3a4a4;
+
+  --background-color: #eff0f1;
+}
+
+::selection {
+  background-color: var(--secondary-color-dark-light);
+  color: var(--secondary-color-dark-darkest);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--secondary-color-dark-darkest);
+}

@@ -1,0 +1,128 @@
+<div>
+  <section
+    class="relative flex flex-col items-center justify-center min-h-screen p-6 bg-background"
+    role="banner"
+  >
+    <div class="absolute inset-0 flex flex-col items-center justify-center p-6">
+      <div class="mb-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="70"
+          height="70"
+          viewBox="0 0 100 125"
+          class="w-20 h-20 sm:w-24 sm:h-24 text-primary-green"
+        >
+          <g>
+            <path
+              d="M80.845,5H19.155C12.1,5,6.359,10.74,6.359,17.795v64.409C6.359,89.26,12.1,95,19.155,95h61.689 c7.056,0,12.796-5.74,12.796-12.796V17.795C93.641,10.74,87.9,5,80.845,5z M68.146,10.631c4.952,0,8.98,4.027,8.98,8.976v48.083 c0,4.952-4.028,8.98-8.98,8.98H30.947c-4.949,0-8.976-4.028-8.976-8.98V19.607c0-4.949,4.027-8.976,8.976-8.976H68.146z M8.359,17.795C8.359,11.843,13.203,7,19.155,7h54.554l-5.703,1.631H30.947c-6.052,0-10.976,4.924-10.976,10.976v47.687 L8.359,79.676V17.795z"
+              fill="currentColor"
+            />
+          </g>
+        </svg>
+      </div>
+
+      <div class="max-w-2xl text-center">
+        <h1
+          class="text-3xl font-extrabold leading-tight text-secondary-dark-darkest sm:text-4xl md:text-5xl"
+        >
+          Thank You for visiting <span class="text-primary-green">LCCode</span>
+        </h1>
+        <h2
+          class="mt-4 text-lg font-semibold text-secondary-dark-mid sm:text-xl md:text-2xl"
+        >
+          Welcome to the Platform!
+        </h2>
+        <p class="mt-4 text-base text-gray-600 sm:text-lg md:text-xl">
+          This is a development testing environment.
+        </p>
+      </div>
+
+      <div class="max-w-6xl p-6 mx-auto mt-5 mb-5">
+        <div class="flex flex-col mb-8 space-y-4">
+          <a
+            href="mailto:evanmulcare@gmail.com"
+            class="flex items-center justify-center px-6 py-3 font-semibold text-white transition-transform duration-300 transform rounded-lg shadow-md hover:rounded-none bg-primary-green hover:bg-primary-green-light hover:scale-105"
+            aria-label="Contact Us"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="mr-3"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 13.414l-8-8V4a2 2 0 012-2h16a2 2 0 012 2v1.414l-8 8zM4 6.414L12 14l8-7.586V4H4v2.414zM20 20H4v-8.586l8-8 8 8V20z"
+              />
+            </svg>
+            <span class="font-semibold">Contact</span>
+          </a>
+
+          <a
+            (click)="openDocumentation()"
+            class="flex items-center justify-center px-6 py-3 font-semibold transition-transform duration-300 transform border rounded-lg shadow-md hover:rounded-none border-secondary-dark-darkest text-secondary-dark-darkest hover:scale-105"
+            aria-label="Documentation"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 1024 1024"
+              class="mr-3 icon"
+              aria-hidden="true"
+            >
+              <path
+                d="M719.8 651.8m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0Z"
+                fill="#E73B37"
+              />
+              <path
+                d="M512.1 64H172v896h680V385.6L512.1 64z m278.8 324.3h-280v-265l280 265zM808 916H216V108h278.6l0.2 0.2v296.2h312.9l0.2 0.2V916z"
+                fill="#39393A"
+              />
+              <path d="M280.5 530h325.9v16H280.5z" fill="#39393A" />
+              <path d="M639.5 530h90.2v16h-90.2z" fill="#E73B37" />
+              <path d="M403.5 641.8h277v16h-277z" fill="#39393A" />
+              <path d="M280.6 641.8h91.2v16h-91.2z" fill="#E73B37" />
+              <path d="M279.9 753.7h326.5v16H279.9z" fill="#39393A" />
+              <path d="M655.8 753.7h73.9v16h-73.9z" fill="#E73B37" />
+            </svg>
+            <span class="font-semibold">Documentation</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="relative w-full min-h-screen px-6 py-12 bg-gradient-to-r from-secondary-dark-mid to-secondary-dark-darkest"
+    role="region"
+    aria-labelledby="release-notes-title"
+  >
+    <div class="container max-w-5xl mx-auto text-white">
+      <h2
+        id="release-notes-title"
+        class="mb-8 text-3xl font-bold text-center text-white"
+      >
+        Development Notes
+      </h2>
+      <div class="space-y-6">
+        <div
+          class="p-6 bg-white rounded-lg shadow-md text-secondary-dark-darkest"
+        >
+          <h3 class="text-xl font-semibold">
+            Infrastructure and UI additions - 20 Jan - 1 Feb
+          </h3>
+          <ul class="mt-2 list-disc list-inside">
+            <li>
+              Set up the project infrastructure, including version control with
+              GitHub and automatic deployment using Firebase Hosting and GitHub
+              Actions. Created a simple user interface in Angular.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

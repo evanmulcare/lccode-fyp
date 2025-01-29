@@ -1,0 +1,53 @@
+<div
+  class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white border rounded-lg shadow-sm hover:shadow-lg"
+>
+  <div class="relative h-48">
+    <div
+      class="h-full bg-center bg-cover rounded-t-lg"
+      [ngStyle]="{
+        'background-image': 'url(assets/images/introduction_background.png)',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"
+      ></div>
+      <div class="absolute bottom-0 left-0 w-full p-4">
+        <div class="text-sm font-semibold text-white truncate">
+          {{ course?.strand }}
+        </div>
+        <div class="mt-1 text-lg font-bold text-white truncate">
+          {{ course?.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-between p-4">
+    <div class="flex items-center justify-between mt-4 space-x-4">
+      <div class="text-center">
+        <div class="mb-1 text-4xl font-bold text-secondary-dark-mid">0%</div>
+        <div class="text-sm text-gray-600">Not Started</div>
+      </div>
+
+      <div class="flex space-x-2">
+        <a
+          (click)="startCourse()"
+          class="flex items-center justify-center w-12 h-12 text-white transition-transform transform rounded-full hover:scale-105 bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          aria-label="Play Course"
+        >
+          <fa-icon [icon]="faPlay" class="ml-1 text-2xl"></fa-icon>
+        </a>
+
+        <a
+          class="flex items-center justify-center w-12 h-12 text-white transition-transform transform rounded-full bg-secondary-dark-mid hover:bg-secondary-dark-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          (click)="onDownload()"
+          aria-label="Download Content"
+        >
+          <fa-icon [icon]="faDownload" class="text-xl"></fa-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
