@@ -7,6 +7,8 @@ import {
   faSearch,
   faTimes,
   faChevronDown,
+  faList,
+  faSave,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -23,6 +25,8 @@ export class ExamWorksheetBuilderComponent {
     faTimes,
     faPlus,
     faChevronDown,
+    faList,
+    faSave,
   };
   exams = [
     {
@@ -86,6 +90,18 @@ export class ExamWorksheetBuilderComponent {
 
   isExamQuestionsOpen = false;
   isMarkingSchemesOpen = false;
+
+  menuOpen = false;
+  currentSelection = 'Higher';
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  chooseOption(option: string) {
+    this.currentSelection = option;
+    this.menuOpen = false;
+  }
 
   addEmptyPage() {
     const page = {

@@ -19,6 +19,10 @@ module.exports = {
           "dark-mid": "#4f4f4f",
           "dark-light": "#a3a4a4",
         },
+        special: {
+          purple: "#DFA5C1",
+          blue: "#B9D8F3",
+        },
         background: {
           DEFAULT: "#eff0f1",
         },
