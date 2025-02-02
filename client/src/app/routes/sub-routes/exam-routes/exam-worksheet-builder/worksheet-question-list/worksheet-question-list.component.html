@@ -1,0 +1,30 @@
+<div class="p-1 border-b">
+  <div
+    class="flex items-center justify-start pl-2 cursor-pointer"
+    (click)="isOpen = !isOpen"
+  >
+    <button
+      class="flex items-center justify-center w-6 h-6 mr-2 transition-colors duration-200 rounded-full border-secondary-dark-mid hover:bg-gray-100 focus:outline-none"
+      aria-label="Toggle chapter"
+    >
+      <fa-icon
+        [icon]="icons.faChevronDown"
+        class="text-sm transition-transform duration-300 text-secondary-dark-mid"
+        [ngClass]="{ 'rotate-180': isOpen, 'rotate-0': !isOpen }"
+      ></fa-icon>
+    </button>
+    <span class="font-semibold text-md text-secondary-dark-mid">
+      {{ exam }}
+    </span>
+  </div>
+
+  <div *ngIf="isOpen" class="p-2 mt-2 border-t">
+    <ul>
+      <app-worksheet-question-card
+        *ngFor="let question of questions"
+        [question]="question"
+        (addAnswer)="onAdd(question)"
+      ></app-worksheet-question-card>
+    </ul>
+  </div>
+</div>
