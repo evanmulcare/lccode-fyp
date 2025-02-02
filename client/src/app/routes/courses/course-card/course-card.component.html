@@ -33,7 +33,7 @@
 
       <div class="flex space-x-2">
         <a
-          (click)="startCourse()"
+          [routerLink]="['/courses', course?.id]"
           class="flex items-center justify-center w-12 h-12 text-white transition-transform transform rounded-full hover:scale-105 bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           aria-label="Play Course"
         >

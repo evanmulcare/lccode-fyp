@@ -37,3 +37,120 @@ body {
   background-color: var(--background-color);
   color: var(--secondary-color-dark-darkest);
 }
+
+input[type="checkbox"].custom-checkbox {
+  accent-color: var(--primary-color-green-light);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  appearance: auto;
+  border-radius: 4px;
+}
+
+input[type="checkbox"].custom-checkbox:checked {
+  background-color: var(--primary-color-green-light);
+  border-color: var(--primary-color-green-light);
+}
+
+input[type="checkbox"].custom-checkbox:focus {
+  outline: 2px solid var(--primary-color-green-light);
+  outline-offset: 2px;
+}
+
+.markdown-body {
+  @apply text-base leading-relaxed;
+  line-height: 1.6;
+  color: var(--secondary-color-darkest);
+}
+
+.markdown-body h1 {
+  @apply mt-6 mb-4 text-3xl font-bold;
+  border-bottom: 2px solid var(--secondary-color-dark-light);
+}
+.markdown-body h2 {
+  @apply mt-5 mb-3 text-2xl font-semibold;
+  border-bottom: 1px solid var(--secondary-color-dark-light);
+}
+
+.markdown-body h3 {
+  @apply mt-4 mb-2 text-xl font-medium;
+}
+
+.markdown-body h4 {
+  @apply mt-3 mb-2 text-lg font-medium;
+}
+.markdown-body p {
+  @apply mb-4;
+  line-height: 1.6;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  @apply pl-5 mb-4;
+}
+
+.markdown-body ul {
+  @apply list-disc;
+}
+
+.markdown-body ol {
+  @apply list-decimal;
+}
+
+.markdown-body li {
+  @apply mb-2;
+}
+
+.markdown-body blockquote {
+  @apply p-4 pl-4 mb-4 italic border-l-4 text-secondary-dark-mid;
+  border-color: var(--secondary-color-dark-light);
+}
+.markdown-body code {
+  @apply p-1 text-sm bg-gray-200 rounded;
+  font-family: monospace;
+}
+
+.markdown-body pre {
+  @apply p-4 overflow-x-auto bg-gray-100 rounded;
+  font-family: monospace;
+}
+
+.markdown-body pre code {
+  @apply text-lg text-secondary-dark-darkest;
+}
+.markdown-body table {
+  @apply w-full mb-4 border-collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  @apply p-2 border border-secondary-dark-light;
+}
+
+.markdown-body th {
+  @apply text-white bg-primary-green-light;
+}
+
+.markdown-body tr:nth-child(even) {
+  @apply bg-gray-100;
+}
+
+.markdown-body img {
+  @apply h-auto max-w-full mb-4;
+}
+
+.markdown-body a {
+  @apply font-semibold text-primary-green;
+}
+
+.markdown-body a:hover {
+  @apply underline;
+}
+
+.markdown-body hr {
+  @apply my-4 border-t-2 border-secondary-dark-light;
+}
+.markdown-body strong {
+  @apply font-extrabold;
+  color: black;
+}

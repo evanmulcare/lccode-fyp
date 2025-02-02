@@ -15,8 +15,4 @@ export class CourseCardComponent {
   onDownload() {
     alert('Download not implemented yet.');
   }
-
-  startCourse() {
-    alert('Course not implemented yet.');
-  }
 }

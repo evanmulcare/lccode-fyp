@@ -1,0 +1,61 @@
+<div>
+  <div class="flex items-center justify-between mb-6">
+    <div class="relative">
+      <button
+        (click)="toggleDropdown()"
+        class="px-4 py-2 text-lg font-semibold transition bg-white border border-gray-300 rounded-lg text-secondary-dark-mid hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-green focus:ring-opacity-50"
+      >
+        {{ selectedLanguage }}
+      </button>
+      <div
+        *ngIf="dropdownOpen"
+        class="absolute left-0 z-10 w-40 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg"
+      >
+        <button
+          *ngFor="let lang of ['JavaScript', 'Python']"
+          (click)="selectLanguage(lang)"
+          class="block w-full px-4 py-2 text-left transition hover:bg-gray-100 focus:outline-none"
+        >
+          {{ lang }}
+        </button>
+      </div>
+    </div>
+
+    <div class="flex space-x-2">
+      <button
+        class="px-4 py-2 text-white transition rounded-lg bg-secondary-dark-mid hover:bg-secondary-dark-darkestfocus:outline-none focus:ring-2 focus:ring-secondary-dark-mid focus:ring-opacity-50"
+      >
+        Solution
+      </button>
+      <button
+        (click)="resetEditor()"
+        class="px-4 py-2 text-white transition rounded-lg bg-secondary-dark-mid hover:bg-secondary-dark-darkest focus:outline-none focus:ring-2 focus:ring-secondary-dark-mid focus:ring-opacity-50"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <div #editorContainer class="bg-black" style="min-height: 600px">
+    <ngx-monaco-editor
+      style="height: 100%"
+      [options]="editorOptions"
+      [(ngModel)]="code"
+      (ngModelChange)="onCodeChange()"
+      (onInit)="onEditorInit($event)"
+    ></ngx-monaco-editor>
+  </div>
+
+  <div class="flex justify-end gap-4 mt-6">
+    <button
+      class="px-6 py-2 transition border-2 rounded-lg text-secondary-dark-mid border-secondary-dark-light focus:outline-none focus:ring-2 focus:ring-secondary-dark-light focus:ring-opacity-50"
+    >
+      Run
+    </button>
+    <button
+      class="px-6 py-2 text-white transition rounded-lg bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-primary-green focus:ring-opacity-50"
+    >
+      Submit
+    </button>
+  </div>
+</div>

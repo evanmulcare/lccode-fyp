@@ -1,0 +1,43 @@
+<div class="flex justify-between p-5 mb-4 bg-white rounded-lg">
+  <h1
+    class="flex items-center text-xl font-semibold"
+    [ngClass]="{ 'line-through': isCompleted }"
+  >
+    <span class="flex items-center mr-3">
+      <label class="inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          [checked]="isCompleted"
+          (change)="toggleCompletion()"
+          class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 custom-checkbox"
+        />
+      </label>
+    </span>
+    {{ title }}
+  </h1>
+
+  <div class="flex space-x-2">
+    <button
+      class="px-4 py-2 text-white transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green-light"
+      [ngClass]="{
+        'bg-primary-green hover:bg-primary-green-light': hasPrevious,
+        'bg-gray-400 cursor-not-allowed': !hasPrevious
+      }"
+      (click)="navigateToPreviousLesson()"
+      [disabled]="!hasPrevious"
+    >
+      Prev
+    </button>
+    <button
+      class="px-4 py-2 text-white transition-colors duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green-light"
+      [ngClass]="{
+        'bg-primary-green hover:bg-primary-green-light': hasNext,
+        'bg-secondary-dark-light cursor-not-allowed': !hasNext
+      }"
+      (click)="navigateToNextLesson()"
+      [disabled]="!hasNext"
+    >
+      Next
+    </button>
+  </div>
+</div>

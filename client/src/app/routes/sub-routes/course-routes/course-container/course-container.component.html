@@ -1,0 +1,45 @@
+<div class="flex flex-col h-screen">
+  <app-course-topnav
+    class="fixed z-10 w-full px-6 py-4 bg-white border-b"
+  ></app-course-topnav>
+
+  <div class="flex flex-1 pt-[73px]">
+    <div class="flex-grow overflow-auto">
+      <main
+        class="px-4 py-8 mx-auto transition-all duration-300 max-w-7xl sm:px-6 lg:px-8"
+        [ngClass]="{
+          'pr-[18rem] ': isSidebarOpen$ | async,
+          'max-md:mr-72': isSidebarOpen$ | async
+        }"
+      >
+        <app-course-title-card class="mb-8"></app-course-title-card>
+
+        <ng-container
+          *ngIf="lessonType$ | async as lessonType"
+          [ngSwitch]="lessonType"
+        >
+          <app-notes-viewer
+            *ngSwitchCase="'note'"
+            [lesson]="lesson$ | async"
+          ></app-notes-viewer>
+          <div *ngSwitchCase="'code'">
+            <app-markdown-viewer
+              [source]="(lesson$ | async)?.src"
+            ></app-markdown-viewer>
+            <app-code-editor></app-code-editor>
+          </div>
+          <app-exam-question-viewer
+            *ngSwitchCase="'exam'"
+            [lesson]="lesson$ | async"
+          >
+          </app-exam-question-viewer>
+        </ng-container>
+      </main>
+    </div>
+
+    <app-course-sidenav
+      *ngIf="isSidebarOpen$ | async"
+      class="fixed right-0 z-10 w-full h-full px-2 mt-3 bg-white border-l md:w-72"
+    ></app-course-sidenav>
+  </div>
+</div>

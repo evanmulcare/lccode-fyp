@@ -1,0 +1,111 @@
+<div class="min-h-screen">
+  <div
+    class="relative bg-cover bg-center h-[35vh] w-full flex flex-col justify-center items-center bg-primary-green-light"
+  >
+    <div
+      class="relative flex flex-col items-center justify-center w-full h-full p-6 bg-black max-w-7xl bg-opacity-20"
+    >
+      <button
+        class="absolute px-4 py-2 text-white transition transform rounded-md top-4 left-4 bg-secondary-dark-mid hover:bg-secondary-dark hover:scale-95"
+        routerLink="/courses"
+      >
+        <fa-icon [icon]="icons.faChevronLeft" class="mr-2"></fa-icon>
+        Back to Courses
+      </button>
+
+      <div class="flex flex-col items-center justify-center text-center">
+        <h1 class="text-2xl font-bold text-white md:text-3xl lg:text-4xl">
+          {{ course?.title }}
+        </h1>
+
+        <div
+          class="absolute flex justify-between w-full px-5 space-x-4 bottom-5 md:space-x-6 lg:space-x-8"
+        >
+          <div class="flex mt-8 space-x-2">
+            <button
+              (click)="downloadMaterial()"
+              class="flex items-center justify-center w-12 h-12 text-white transition rounded-full bg-secondary-dark-mid hover:bg-secondary-dark-light"
+              aria-label="Download"
+            >
+              <fa-icon [icon]="icons.faDownload" class="w-6 h-6"></fa-icon>
+            </button>
+            <button
+              (click)="shareContent()"
+              class="flex items-center justify-center w-12 h-12 text-white transition rounded-full bg-secondary-dark-mid hover:bg-secondary-dark-light"
+              aria-label="Share"
+            >
+              <fa-icon [icon]="icons.faLink" class="w-6 h-6"></fa-icon>
+            </button>
+          </div>
+
+          <button
+            class="flex items-center justify-center w-20 h-20 text-white transition transform rounded-full bg-primary-green hover:bg-primary-green-light"
+            aria-label="Download"
+            [routerLink]="['/courses', course?.id, 1]"
+          >
+            <fa-icon [icon]="icons.faPlay" class="ml-2 text-4xl"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-screen-xl p-6 mx-auto mt-2 space-y-8">
+    <section>
+      <h2 class="mb-2 text-2xl font-bold text-gray-800">Introduction</h2>
+      <p class="mb-4 text-sm leading-relaxed text-left md:text-base lg:text-lg">
+        {{ course?.description }}
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-2xl font-bold text-gray-800">
+        Prerequisite Material
+      </h2>
+      <div
+        class="p-4 mb-4 bg-white border rounded-md border-secondary-dark-light"
+      >
+        <div *ngIf="prerequisiteCourses.length === 0">
+          No Prerequisites needed!
+        </div>
+        <ul class="space-y-3 list-none" *ngIf="prerequisiteCourses.length > 0">
+          <li
+            *ngFor="let prerequisite of prerequisiteCourses; let i = index"
+            [ngClass]="{
+              'bg-background': i % 2 === 0,
+              'bg-white': i % 2 !== 0
+            }"
+            class="flex items-start hover:bg-gray-100 hover:text-blue-400"
+          >
+            <a
+              (click)="refreshPage(['/courses', prerequisite.id])"
+              class="flex items-center p-3 transition-colors duration-300 ease-in-out rounded-md"
+            >
+              <span class="text-base font-medium text-secondary-dark-dark">
+                {{ i + 1 }}. {{ prerequisite.title }}
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-2xl font-bold text-gray-800">Course Content</h2>
+      <app-course-chapter-item
+        *ngFor="let section of sections"
+        [section]="section"
+        [lessons]="getLessonsForSection(section.id)"
+      ></app-course-chapter-item>
+    </section>
+
+    <section>
+      <h2 class="mt-4 mb-4 text-2xl font-bold text-gray-800">
+        Additional Resources
+      </h2>
+      <app-markdown-viewer
+        [source]="course?.resourcesSrc ?? ''"
+      ></app-markdown-viewer>
+    </section>
+  </div>
+</div>

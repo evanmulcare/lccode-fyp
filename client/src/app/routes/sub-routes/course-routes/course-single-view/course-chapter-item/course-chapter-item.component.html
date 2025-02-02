@@ -1,0 +1,45 @@
+<div class="pb-4 mb-2 bg-white border rounded-md border-secondary-dark-light">
+  <div
+    class="flex items-center justify-start pl-2 cursor-pointer bg-background-default"
+    (click)="isOpen = !isOpen"
+  >
+    <button
+      class="flex items-center justify-center w-8 h-8 mt-4 mr-2 transition-colors duration-200 rounded-full border-secondary-dark-mid hover:bg-gray-100 focus:outline-none"
+      aria-label="Toggle chapter"
+    >
+      <fa-icon
+        [icon]="icons.faChevronDown"
+        class="transition-transform duration-300 text-secondary-dark-mid"
+        [ngClass]="{ 'rotate-180': isOpen, 'rotate-0': !isOpen }"
+      ></fa-icon>
+    </button>
+    <span class="mt-4 text-xl font-semibold text-secondary-dark-dark">
+      {{ section.title }}
+    </span>
+  </div>
+
+  <div *ngIf="isOpen" class="p-2 rounded-lg bg-background-default">
+    <ul class="space-y-3 list-none">
+      <li
+        *ngFor="let lessonId of section.lessons; let i = index"
+        [ngClass]="{
+          'bg-background': i % 2 === 0,
+          'bg-white': i % 2 !== 0
+        }"
+        class="flex items-start hover:bg-gray-100 hover:text-primary-green-light"
+      >
+        <a
+          [routerLink]="['/courses', courseID, lessonId]"
+          class="flex items-center p-3 transition-colors duration-300 ease-in-out rounded-md"
+        >
+          <div class="flex items-center justify-center w-6 h-6 mr-3">
+            <fa-icon [icon]="getLessonIcon(lessonId)"></fa-icon>
+          </div>
+          <span class="text-base font-medium text-secondary-dark-dark">
+            {{ i + 1 }}. {{ getLessonTitle(lessonId) }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

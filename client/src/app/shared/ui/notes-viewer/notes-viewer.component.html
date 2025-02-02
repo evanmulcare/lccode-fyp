@@ -1,0 +1,10 @@
+<div
+  class="p-1 mx-auto mb-4 bg-black rounded-md"
+  *ngIf="lesson?.videoSrc && lesson?.videoSrc !== ''"
+>
+  <app-video-player [videoSource]="lesson?.videoSrc!"></app-video-player>
+</div>
+
+<div class="p-4 mx-auto bg-white rounded-md markdown-body">
+  <markdown mermaid katex [src]="lesson?.src" ngPreserveWhitespaces></markdown>
+</div>

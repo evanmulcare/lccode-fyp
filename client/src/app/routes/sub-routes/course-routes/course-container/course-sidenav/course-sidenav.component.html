@@ -1,0 +1,71 @@
+<div class="flex flex-col h-full">
+  <nav>
+    <ul class="w-full mt-3 space-y-2 font-medium">
+      <li *ngFor="let section of sectionsWithLessons">
+        <div
+          (click)="toggleSection(section.id)"
+          class="flex items-center justify-between p-2 transition-colors duration-300 rounded-lg cursor-pointer"
+          [ngClass]="{
+            'bg-secondary-dark-mid text-white': isSectionHighlighted(section),
+            'bg-background-default text-secondary-dark-mid border border-secondary-dark-mid':
+              !isSectionHighlighted(section)
+          }"
+        >
+          <span class="font-semibold">{{ section.title }}</span>
+          <fa-icon
+            [icon]="
+              expandedSections.has(section.id)
+                ? icons.faChevronDown
+                : icons.faChevronRight
+            "
+          ></fa-icon>
+        </div>
+        <ul
+          *ngIf="expandedSections.has(section.id)"
+          class="mt-2 space-y-2 overflow-hidden transition-all duration-500 ease-in-out border-l-2 border-secondary-dark-light"
+          [ngClass]="{
+            'max-h-[2000px]': expandedSections.has(section.id),
+            'max-h-0': !expandedSections.has(section.id)
+          }"
+        >
+          <li *ngFor="let lesson of section.lessons">
+            <button
+              (click)="selectLesson(lesson.id)"
+              class="flex items-center justify-between w-full p-2 mt-2 ml-1 text-sm transition-colors duration-200 rounded-lg hover:bg-secondary-dark-light"
+              [ngClass]="{
+                'bg-primary-green-light font-bold':
+                  lesson.id === selectedLessonId,
+                'bg-white': lesson.id !== selectedLessonId
+              }"
+            >
+              <span class="flex items-center">
+                <ng-container [ngSwitch]="lesson.type">
+                  <fa-icon
+                    *ngSwitchCase="'code'"
+                    [icon]="icons.faCode"
+                  ></fa-icon>
+                  <fa-icon
+                    *ngSwitchCase="'exam'"
+                    [icon]="icons.faPen"
+                  ></fa-icon>
+                  <fa-icon
+                    *ngSwitchCase="'note'"
+                    [icon]="icons.faFont"
+                  ></fa-icon>
+                </ng-container>
+                <span class="ml-1">{{ lesson.content }}</span>
+              </span>
+              <span
+                class="px-1 py-1 rounded-full"
+                [ngClass]="{
+                  'bg-primary-green-light': lesson.isComplete,
+                  'border border-secondary-dark-light': !lesson.isComplete
+                }"
+              ></span>
+            </button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
