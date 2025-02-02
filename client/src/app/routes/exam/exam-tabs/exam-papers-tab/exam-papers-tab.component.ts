@@ -36,9 +36,6 @@ export class ExamPapersTabComponent {
     faLock,
   };
 
-  openExamDetails() {
-    alert('Exam not implemented yet!');
-  }
   downloadExamMaterial() {
     alert('Download not implemented yet!');
   }

@@ -1,0 +1,34 @@
+body {
+  background: #fff;
+}
+
+.bookWrap {
+  height: 519px;
+  width: 345px;
+  perspective: 1200px;
+}
+
+.book {
+  background: #000000;
+  height: 519px;
+  width: 345px;
+  position: absolute;
+  transition: transform 0.5s ease 0s;
+  border-radius: 0 10px 10px 0;
+  perspective: 1200px;
+}
+.cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 345px;
+  backface-visibility: hidden;
+  border-radius: 0 6px 6px 0;
+  transition: transform 0.5s ease, width 0.5s ease;
+  transform-origin: 0;
+}
+.cover:hover {
+  width: 315px;
+  transform: rotateY(-20deg);
+}

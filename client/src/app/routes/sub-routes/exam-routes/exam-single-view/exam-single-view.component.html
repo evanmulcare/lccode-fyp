@@ -1,0 +1,52 @@
+<div class="max-w-screen-lg mx-auto">
+  <button
+    class="px-4 py-2 mt-5 ml-5 text-white transition transform rounded-md top-4 left-4 bg-secondary-dark-mid hover:bg-secondary-dark hover:scale-95"
+    routerLink="/exam"
+  >
+    <fa-icon [icon]="icons.faChevronLeft" class="mr-2"></fa-icon>
+    Back to Exams
+  </button>
+
+  <div class="p-1 m-5 mx-auto mb-4 bg-black rounded-md">
+    <app-video-player
+      videoSource="https://player.vimeo.com/video/1003640096?h=41382585ea&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+    ></app-video-player>
+  </div>
+
+  <div
+    class="relative flex flex-col items-center justify-center w-full p-10 mx-auto mb-4 text-center bg-gray-700 rounded-lg shadow-lg opacity-70"
+  >
+    <div
+      class="absolute inset-0 flex items-center justify-center bg-black rounded-lg bg-opacity-60"
+    >
+      <fa-icon
+        [icon]="icons.faLock"
+        class="z-10 px-5 py-4 text-white bg-black rounded-full text-8xl"
+      ></fa-icon>
+    </div>
+
+    <div class="absolute z-20 text-xl font-semibold text-white bottom-8">
+      Exam Feature Not Added Yet
+    </div>
+
+    <div class="relative flex flex-wrap justify-center md:space-x-20">
+      <app-exam-card
+        image="assets/images/ordinary.png"
+        class="flex-1 max-w-xs opacity-50"
+      ></app-exam-card>
+      <app-exam-card
+        image="assets/images/higher.png"
+        class="flex-1 max-w-xs opacity-50"
+      ></app-exam-card>
+    </div>
+  </div>
+
+  <div class="p-4 mx-auto bg-white rounded-md markdown-body">
+    <markdown
+      mermaid
+      katex
+      src="assets/markdown/2024paper.md"
+      ngPreserveWhitespaces
+    ></markdown>
+  </div>
+</div>

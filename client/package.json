@@ -28,7 +28,8 @@
     "marked": "^4.3.0",
     "mermaid": "^10.9.0",
     "prismjs": "^1.29.0",
-    "ngx-monaco-editor-v2": "^16.0.1"
+    "ngx-monaco-editor-v2": "^16.0.1",
+    "angular-split": "^17.2.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.0",

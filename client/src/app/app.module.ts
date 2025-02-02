@@ -27,6 +27,12 @@ import { CodeEditorComponent } from './shared/ui/code-editor/code-editor.compone
 import { FormsModule } from '@angular/forms';
 import { VideoPlayerComponent } from './shared/ui/video-player/video-player.component';
 import { SafePipe } from './shared/pipes/safe.pipe';
+import { ExamSingleViewComponent } from './routes/sub-routes/exam-routes/exam-single-view/exam-single-view.component';
+import { ExamCardComponent } from './routes/sub-routes/exam-routes/exam-single-view/exam-card/exam-card.component';
+import { ExamWorksheetBuilderComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/exam-worksheet-builder.component';
+import { WorksheetQuestionCardComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/worksheet-question-card/worksheet-question-card.component';
+import { AngularSplitModule } from 'angular-split';
+import { WorksheetQuestionListComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/worksheet-question-list/worksheet-question-list.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +57,11 @@ import { SafePipe } from './shared/pipes/safe.pipe';
     CodeEditorComponent,
     VideoPlayerComponent,
     SafePipe,
+    ExamSingleViewComponent,
+    ExamCardComponent,
+    ExamWorksheetBuilderComponent,
+    WorksheetQuestionCardComponent,
+    WorksheetQuestionListComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +71,7 @@ import { SafePipe } from './shared/pipes/safe.pipe';
     FormsModule,
     MarkdownModule.forRoot({ loader: HttpClient }),
     MonacoEditorModule.forRoot(),
+    AngularSplitModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

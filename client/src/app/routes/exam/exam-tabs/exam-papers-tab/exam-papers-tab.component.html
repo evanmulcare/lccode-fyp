@@ -50,7 +50,7 @@
                 class="flex items-center justify-end space-x-1 sm:space-x-2 lg:space-x-2"
               >
                 <button
-                  (click)="openExamDetails()"
+                  [routerLink]="['/exam', 'papers', paper.year]"
                   class="px-1 py-1 text-xs text-gray-800 bg-transparent border border-gray-300 rounded hover:text-primary-green-light hover:border-primary-green-light focus:outline-none focus:ring-1 focus:ring-primary-green focus:ring-opacity-50 sm:px-2 sm:py-1 sm:text-sm"
                   aria-label="View Papers"
                 >
