@@ -1,0 +1,79 @@
+<div
+  class="flex items-center justify-center min-h-screen px-4 bg-background sm:px-6 lg:px-8"
+>
+  <div
+    class="flex flex-col justify-center w-full h-screen max-w-md p-8 space-y-6 bg-white shadow-md sm:h-auto sm:rounded-lg"
+  >
+    <div class="flex flex-col items-center mb-8 space-y-4">
+      <div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="70"
+          height="70"
+          viewBox="0 0 100 125"
+          class="w-16 h-16 sm:w-24 sm:h-24 text-primary-green"
+        >
+          <g>
+            <path
+              d="M80.845,5H19.155C12.1,5,6.359,10.74,6.359,17.795v64.409C6.359,89.26,12.1,95,19.155,95h61.689   c7.056,0,12.796-5.74,12.796-12.796V17.795C93.641,10.74,87.9,5,80.845,5z M68.146,10.631c4.952,0,8.98,4.027,8.98,8.976v48.083   c0,4.952-4.028,8.98-8.98,8.98H30.947c-4.949,0-8.976-4.028-8.976-8.98V19.607c0-4.949,4.027-8.976,8.976-8.976H68.146z    M8.359,17.795C8.359,11.843,13.203,7,19.155,7h54.554l-5.703,1.631H30.947c-6.052,0-10.976,4.924-10.976,10.976v47.687   L8.359,79.676V17.795z"
+              fill="#12a588"
+            />
+          </g>
+        </svg>
+      </div>
+
+      <p class="text-center text-md text-secondary-dark-mid">
+        <strong class="text-xl">LCCode Login Portal</strong><br />
+        This is for testing. Please report any issues to
+        <a
+          href="mailto:evan.allen-mulcare@mycit.ie"
+          class="text-primary-green hover:underline"
+          >evan.allen-mulcare&#64;mycit.ie</a
+        >.
+      </p>
+    </div>
+
+    <form (ngSubmit)="login()" class="space-y-4">
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium text-secondary-dark-mid"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-secondary-dark-mid font-geistsans"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full px-4 py-2 font-bold text-white rounded-md shadow-sm bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-primary-green focus:ring-offset-2"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>

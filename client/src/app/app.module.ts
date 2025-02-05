@@ -5,6 +5,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MarkdownModule } from 'ngx-markdown';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'environments/environment';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './routes/home/home.component';
 import { ExamComponent } from './routes/exam/exam.component';
@@ -33,6 +35,7 @@ import { ExamWorksheetBuilderComponent } from './routes/sub-routes/exam-routes/e
 import { WorksheetQuestionCardComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/worksheet-question-card/worksheet-question-card.component';
 import { AngularSplitModule } from 'angular-split';
 import { WorksheetQuestionListComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/worksheet-question-list/worksheet-question-list.component';
+import { LoginComponent } from './routes/login/login.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,7 @@ import { WorksheetQuestionListComponent } from './routes/sub-routes/exam-routes/
     ExamWorksheetBuilderComponent,
     WorksheetQuestionCardComponent,
     WorksheetQuestionListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,7 @@ import { WorksheetQuestionListComponent } from './routes/sub-routes/exam-routes/
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
     MarkdownModule.forRoot({ loader: HttpClient }),
     MonacoEditorModule.forRoot(),
     AngularSplitModule,

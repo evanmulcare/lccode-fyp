@@ -10,6 +10,7 @@ import {
   faList,
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
+import { PDFDocument } from 'pdf-lib';
 
 @Component({
   selector: 'app-exam-worksheet-builder',
@@ -28,9 +29,27 @@ export class ExamWorksheetBuilderComponent {
     faList,
     faSave,
   };
-  exams = [
+  ordinaryExams = [
     {
       year: 2024,
+      questions: [
+        {
+          order: 1,
+          topic: 'Syntax',
+          year: 2024,
+          section: 'A',
+          format: 'Short Answer',
+          description: 'Explain why for loop syntax does not work.',
+          content:
+            'assets/exams/questions/2024/section_a/q3/2024_a_3_thumbnail.png',
+          pdfFormat: 'assets/exams/questions/2024/section_a/q3/2024_a_3.pdf',
+        },
+      ],
+    },
+  ];
+  higherExams = [
+    {
+      year: 2021,
       questions: [
         {
           order: 1,
@@ -42,17 +61,6 @@ export class ExamWorksheetBuilderComponent {
           content:
             'assets/exams/questions/2024/section_a/q1/2024_a_1_thumbnail.png',
           pdfFormat: 'assets/exams/questions/2024/section_a/q1/2024_a_1.pdf',
-        },
-        {
-          order: 3,
-          topic: 'Syntax',
-          year: 2024,
-          section: 'A',
-          format: 'Short Answer',
-          description: 'Explain why for loop syntax does not work.',
-          content:
-            'assets/exams/questions/2024/section_a/q3/2024_a_3_thumbnail.png',
-          pdfFormat: 'assets/exams/questions/2024/section_a/q3/2024_a_3.pdf',
         },
       ],
     },
@@ -84,13 +92,13 @@ export class ExamWorksheetBuilderComponent {
       ],
     },
   ];
-
   worksheetTitle: string = '';
   pages: any[] = [];
 
   isExamQuestionsOpen = false;
   isMarkingSchemesOpen = false;
 
+  exams = this.higherExams;
   menuOpen = false;
   currentSelection = 'Higher';
 
@@ -100,6 +108,7 @@ export class ExamWorksheetBuilderComponent {
 
   chooseOption(option: string) {
     this.currentSelection = option;
+    this.exams = option === 'Higher' ? this.higherExams : this.ordinaryExams;
     this.menuOpen = false;
   }
 
@@ -148,7 +157,23 @@ export class ExamWorksheetBuilderComponent {
     return result;
   }
 
-  downloadPDF() {
-    alert('Download not implemented yet.');
+  async downloadPDF() {
+    const mergedPdf = await PDFDocument.create();
+
+    for (const page of this.pages) {
+      const pdfBytes = await fetch(page.pdfFormat).then((res) =>
+        res.arrayBuffer()
+      );
+      const pdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach((copiedPage) => mergedPdf.addPage(copiedPage));
+    }
+
+    const mergedPdfFile = await mergedPdf.save();
+    const blob = new Blob([mergedPdfFile], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `${this.worksheetTitle || 'Worksheet'}.pdf`;
+    link.click();
   }
 }

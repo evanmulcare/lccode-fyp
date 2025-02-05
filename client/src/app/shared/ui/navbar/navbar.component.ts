@@ -7,6 +7,7 @@ import {
   faExclamation,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../services/firebase/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,9 @@ export class NavbarComponent {
     faRightFromBracket,
   };
 
+  constructor(private auth: AuthService) {}
+
   logout(): void {
-    alert('authentication not implemented yet');
+    this.auth.logout();
   }
 }

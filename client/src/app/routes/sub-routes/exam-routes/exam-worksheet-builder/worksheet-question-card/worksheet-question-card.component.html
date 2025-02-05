@@ -26,7 +26,7 @@
     </p>
   </div>
 
-  <div class="flex justify-end space-x-3">
+  <div class="flex justify-between">
     <button
       (click)="onAdd()"
       class="flex items-center px-2 py-1 text-sm text-white transition-transform transform rounded-md bg-primary-green hover:bg-primary-green-light hover:scale-95"
@@ -35,13 +35,22 @@
       Add
     </button>
 
-    <button
-      (click)="togglePreview()"
-      class="flex items-center px-2 py-1 text-sm text-white transition-transform transform rounded-md bg-secondary-dark-mid hover:bg-secondary-dark-light hover:scale-95"
-    >
-      <fa-icon [icon]="icons.faEye" class="mr-2"></fa-icon>
-      Preview
-    </button>
+    <div class="flex space-x-2">
+      <button
+        (click)="togglePreview()"
+        class="flex items-center px-2 py-1 text-sm text-white transition-transform transform rounded-md bg-secondary-dark-mid hover:bg-secondary-dark-light hover:scale-95"
+      >
+        <fa-icon [icon]="icons.faEye" class="mr-2"></fa-icon>
+        Preview
+      </button>
+      <button
+        (click)="onAdd()"
+        class="flex items-center px-2 py-1 text-sm text-white transition-transform transform rounded-md bg-primary-green hover:bg-primary-green-light hover:scale-95"
+      >
+        <fa-icon [icon]="icons.faPlus" class="mr-2"></fa-icon>
+        Attach Marking Scheme
+      </button>
+    </div>
   </div>
   <div class="mb-3" *ngIf="showThumbnail">
     <img

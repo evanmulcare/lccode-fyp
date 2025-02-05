@@ -7,23 +7,34 @@ import { CourseSingleViewComponent } from './routes/sub-routes/course-routes/cou
 import { CourseContainerComponent } from './routes/sub-routes/course-routes/course-container/course-container.component';
 import { ExamSingleViewComponent } from './routes/sub-routes/exam-routes/exam-single-view/exam-single-view.component';
 import { ExamWorksheetBuilderComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/exam-worksheet-builder.component';
+import { LoginComponent } from './routes/login/login.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'exam', component: ExamComponent },
+  { path: 'login', component: LoginComponent },
+
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'exam', component: ExamComponent, canActivate: [AuthGuard] },
   {
     path: 'exam/papers/:year',
     component: ExamSingleViewComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'worksheets/new',
     component: ExamWorksheetBuilderComponent,
+    canActivate: [AuthGuard],
   },
-  { path: 'courses', component: CoursesComponent },
-  { path: 'courses/:courseId', component: CourseSingleViewComponent },
+  { path: 'courses', component: CoursesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'courses/:courseId',
+    component: CourseSingleViewComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'courses/:courseId/:lessonId',
     component: CourseContainerComponent,
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '/' },
 ];
