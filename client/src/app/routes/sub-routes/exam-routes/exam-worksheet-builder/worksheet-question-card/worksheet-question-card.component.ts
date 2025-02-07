@@ -19,6 +19,8 @@ export class WorksheetQuestionCardComponent {
     this.addAnswer.emit(this.question);
   }
   togglePreview() {
+    console.log('test', this.question);
+
     this.showThumbnail = !this.showThumbnail;
   }
 }

@@ -11,6 +11,15 @@ import {
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
 import { PDFDocument } from 'pdf-lib';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+} from 'firebase/firestore';
+import { ExamData } from 'src/app/models/examData';
 
 @Component({
   selector: 'app-exam-worksheet-builder',
@@ -29,78 +38,84 @@ export class ExamWorksheetBuilderComponent {
     faList,
     faSave,
   };
-  ordinaryExams = [
+
+  ordinaryExams: ExamData[] = [
     {
       year: 2024,
-      questions: [
-        {
-          order: 1,
-          topic: 'Syntax',
-          year: 2024,
-          section: 'A',
-          format: 'Short Answer',
-          description: 'Explain why for loop syntax does not work.',
-          content:
-            'assets/exams/questions/2024/section_a/q3/2024_a_3_thumbnail.png',
-          pdfFormat: 'assets/exams/questions/2024/section_a/q3/2024_a_3.pdf',
-        },
-      ],
+      questions: [],
     },
   ];
-  higherExams = [
+
+  higherExams: ExamData[] = [
     {
-      year: 2021,
-      questions: [
-        {
-          order: 1,
-          topic: 'Variables',
-          year: 2024,
-          section: 'A',
-          format: 'Short Answer',
-          description: 'Fill in variable values.',
-          content:
-            'assets/exams/questions/2024/section_a/q1/2024_a_1_thumbnail.png',
-          pdfFormat: 'assets/exams/questions/2024/section_a/q1/2024_a_1.pdf',
-        },
-      ],
-    },
-    {
-      year: 2023,
-      questions: [
-        {
-          order: 1,
-          topic: 'Variables',
-          year: 2024,
-          section: 'A',
-          format: 'Short Answer',
-          description: 'Fill in variable values.',
-          content:
-            'assets/exams/questions/2024/section_a/q1/2024_a_1_thumbnail.png',
-          pdfFormat: 'assets/exams/questions/2024/section_a/q1/2024_a_1.pdf',
-        },
-        {
-          order: 3,
-          topic: 'Syntax',
-          year: 2024,
-          section: 'A',
-          format: 'Short Answer',
-          description: 'Explain why for loop syntax does not work.',
-          content:
-            'assets/exams/questions/2024/section_a/q3/2024_a_3_thumbnail.png',
-          pdfFormat: 'assets/exams/questions/2024/section_a/q3/2024_a_3.pdf',
-        },
-      ],
+      year: 2024,
+      questions: [],
     },
   ];
+
   worksheetTitle: string = '';
   pages: any[] = [];
 
-  isExamQuestionsOpen = false;
-  isMarkingSchemesOpen = false;
+  includeMarkingScheme: boolean = false;
 
   exams = this.higherExams;
   menuOpen = false;
-  currentSelection = 'Higher';
+  currentSelection = 'higher';
+  currentYear = 2024;
+
+  ngOnInit(): void {
+    this.loadExamQuestions();
+  }
+
+  async loadExamQuestions() {
+    try {
+      const db = getFirestore();
+      const examQuestionsCollection = collection(db, 'exam-questions');
+      const examQuery = query(
+        examQuestionsCollection,
+        where('year', '==', this.currentYear),
+        where('level', '==', this.currentSelection),
+        orderBy('order')
+      );
+
+      const querySnapshot = await getDocs(examQuery);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        console.log('Fetched exam question:', data);
+
+        const examData = {
+          year: data['year'],
+          questions: [
+            {
+              order: data['order'],
+              topic: data['topic'],
+              year: data['year'],
+              section: data['section'],
+              description: data['description'],
+              'IMG-URL': data['IMG-URL'],
+              'PDF-URL': data['PDF-URL'],
+              'MARKING-IMG-URL': data['MARKING-IMG-URL'],
+              'MARKING-PDF-URL': data['MARKING-PDF-URL'],
+            },
+          ],
+        };
+
+        const existingExamIndex = this.higherExams.findIndex(
+          (exam) => exam.year === data['year']
+        );
+        if (existingExamIndex !== -1) {
+          this.higherExams[existingExamIndex].questions.push(
+            examData.questions[0]
+          );
+        } else {
+          this.higherExams.push(examData);
+        }
+      });
+    } catch (error) {
+      console.error('Error loading exam questions:', error);
+    }
+  }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
@@ -108,7 +123,7 @@ export class ExamWorksheetBuilderComponent {
 
   chooseOption(option: string) {
     this.currentSelection = option;
-    this.exams = option === 'Higher' ? this.higherExams : this.ordinaryExams;
+    this.exams = option === 'higher' ? this.higherExams : this.ordinaryExams;
     this.menuOpen = false;
   }
 
@@ -116,8 +131,8 @@ export class ExamWorksheetBuilderComponent {
     const page = {
       id: this.generateId(),
       type: 'empty',
-      content: 'assets/exams/questions/page_templates/blank_page_thumbnail.png',
-      pdfFormat: 'assets/exams/questions/page_templates/blank_page.pdf',
+      IMG_URL: 'assets/exams/questions/page_templates/blank_page_thumbnail.png',
+      PDF_URL: 'assets/exams/questions/page_templates/blank_page.pdf',
     };
     this.pages.push(page);
   }
@@ -126,8 +141,8 @@ export class ExamWorksheetBuilderComponent {
     const page = {
       id: this.generateId(),
       type: 'lined',
-      content: 'assets/exams/questions/page_templates/lined_page_thumbnail.png',
-      pdfFormat: 'assets/exams/questions/page_templates/lined_page.pdf',
+      IMG_URL: 'assets/exams/questions/page_templates/lined_page_thumbnail.png',
+      PDF_URL: 'assets/exams/questions/page_templates/lined_page.pdf',
     };
     this.pages.push(page);
   }
@@ -136,14 +151,61 @@ export class ExamWorksheetBuilderComponent {
     const page = {
       id: this.generateId(),
       type: 'answer',
-      content: question.content,
-      pdfFormat: question.pdfFormat,
+      year: question.year,
+      section: question.section,
+      order: question.order,
+      IMG_URL: question['IMG-URL'],
+      PDF_URL: question['PDF-URL'],
+      MARKING_IMG_URL: question['MARKING-IMG-URL'],
+      MARKING_PDF_URL: question['MARKING-PDF-URL'],
     };
     this.pages.push(page);
   }
 
   removePage(index: number) {
+    const removedPage = this.pages[index];
     this.pages.splice(index, 1);
+
+    if (removedPage.type === 'answer') {
+      this.pages = this.pages.filter(
+        (page) =>
+          !(
+            page.type === 'markingScheme' &&
+            page.year === removedPage.year &&
+            page.section === removedPage.section &&
+            page.order === removedPage.order
+          )
+      );
+    }
+  }
+
+  toggleMarkingSchemes() {
+    if (this.includeMarkingScheme) {
+      this.addAllMarkingSchemes();
+    } else {
+      this.removeAllMarkingSchemes();
+    }
+  }
+
+  addAllMarkingSchemes() {
+    const addedQuestions = this.pages.filter((page) => page.type === 'answer');
+    addedQuestions.forEach((page) => {
+      console.log('querst', page);
+      const marking = {
+        id: this.generateId(),
+        type: 'markingScheme',
+        year: page.year,
+        section: page.section,
+        order: page.order,
+        IMG_URL: page.MARKING_IMG_URL,
+        PDF_URL: page.MARKING_PDF_URL,
+      };
+      this.pages.push(marking);
+    });
+  }
+
+  removeAllMarkingSchemes() {
+    this.pages = this.pages.filter((page) => page.type !== 'markingScheme');
   }
 
   generateId() {
@@ -161,16 +223,29 @@ export class ExamWorksheetBuilderComponent {
     const mergedPdf = await PDFDocument.create();
 
     for (const page of this.pages) {
-      const pdfBytes = await fetch(page.pdfFormat).then((res) =>
-        res.arrayBuffer()
-      );
-      const pdf = await PDFDocument.load(pdfBytes);
-      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-      copiedPages.forEach((copiedPage) => mergedPdf.addPage(copiedPage));
+      try {
+        const pdfBytes = await fetch(page.PDF_URL)
+          .then((res) => res.arrayBuffer())
+          .catch((error) => {
+            console.error('Error fetching PDF:', error);
+            throw error;
+          });
+
+        const pdf = await PDFDocument.load(pdfBytes);
+
+        const copiedPages = await mergedPdf.copyPages(
+          pdf,
+          pdf.getPageIndices()
+        );
+        copiedPages.forEach((copiedPage) => mergedPdf.addPage(copiedPage));
+      } catch (error) {
+        console.error('Error processing page PDF:', error);
+      }
     }
 
     const mergedPdfFile = await mergedPdf.save();
     const blob = new Blob([mergedPdfFile], { type: 'application/pdf' });
+
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
     link.download = `${this.worksheetTitle || 'Worksheet'}.pdf`;

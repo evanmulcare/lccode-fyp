@@ -63,7 +63,7 @@
               <fa-icon [icon]="icons.faTimes"></fa-icon>
             </button>
 
-            <img [src]="page.content" alt="Worksheet Image" />
+            <img [src]="page.IMG_URL" alt="Worksheet Image" />
           </div>
         </div>
       </div>
@@ -73,22 +73,39 @@
         <div
           class="h-full p-4 overflow-y-auto bg-white border rounded-md border-secondary-dark-light"
         >
-          <div class="flex justify-end mb-4 space-x-2">
-            <button
-              (click)="addEmptyPage()"
-              class="flex items-center px-4 py-2 transition-transform transform rounded-md text-secondary-dark-mid bg-primary hover:bg-primary-dark hover:scale-95"
-            >
-              <fa-icon [icon]="icons.faPlus" class="mr-2"></fa-icon>
-              Empty Page
-            </button>
+          <div class="flex justify-between mb-4 space-x-2">
+            <div>
+              <span class="flex items-center mt-2 text-md">
+                <span class="flex items-center mr-3">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      class="w-4 h-4 custom-checkbox"
+                      [(ngModel)]="includeMarkingScheme"
+                      (change)="toggleMarkingSchemes()"
+                    />
+                  </label>
+                </span>
+                Include marking scheme
+              </span>
+            </div>
+            <div class="flex">
+              <button
+                (click)="addEmptyPage()"
+                class="flex items-center px-4 py-2 transition-transform transform rounded-md text-secondary-dark-mid bg-primary hover:bg-primary-dark hover:scale-95"
+              >
+                <fa-icon [icon]="icons.faPlus" class="mr-2"></fa-icon>
+                Empty Page
+              </button>
 
-            <button
-              (click)="addLinedPage()"
-              class="flex items-center px-4 py-2 transition-transform transform rounded-md text-secondary-dark-mid bg-primary hover:bg-primary-dark hover:scale-95"
-            >
-              <fa-icon [icon]="icons.faPlus" class="mr-2"></fa-icon>
-              Lined Page
-            </button>
+              <button
+                (click)="addLinedPage()"
+                class="flex items-center px-4 py-2 transition-transform transform rounded-md text-secondary-dark-mid bg-primary hover:bg-primary-dark hover:scale-95"
+              >
+                <fa-icon [icon]="icons.faPlus" class="mr-2"></fa-icon>
+                Lined Page
+              </button>
+            </div>
           </div>
 
           <div class="flex items-center space-x-2">
@@ -97,7 +114,7 @@
                 <button
                   type="button"
                   [ngClass]="
-                    currentSelection === 'Higher'
+                    currentSelection === 'higher'
                       ? 'bg-special-purple'
                       : 'bg-special-blue'
                   "
@@ -118,13 +135,13 @@
               >
                 <div class="py-1">
                   <button
-                    (click)="chooseOption('Higher')"
+                    (click)="chooseOption('higher')"
                     class="block w-full px-4 py-2 text-sm font-semibold text-left text-secondary-dark-mid hover:bg-gray-100"
                   >
                     Higher
                   </button>
                   <button
-                    (click)="chooseOption('Ordinary')"
+                    (click)="chooseOption('ordinary')"
                     class="block w-full px-4 py-2 text-sm font-semibold text-left text-secondary-dark-mid hover:bg-gray-100"
                   >
                     Ordinary
@@ -152,65 +169,15 @@
           <section>
             <div class="pb-2">
               <div
-                class="flex items-center justify-start pl-2 cursor-pointer bg-background-default"
-                (click)="isExamQuestionsOpen = !isExamQuestionsOpen"
+                class="flex items-center justify-start bg-background-default"
               >
-                <button
-                  class="flex items-center justify-center w-8 h-8 mt-2 mr-2 transition-colors duration-200 rounded-full border-secondary-dark-mid hover:bg-gray-100 focus:outline-none"
-                  aria-label="Toggle chapter"
-                >
-                  <fa-icon
-                    [icon]="icons.faChevronDown"
-                    class="transition-transform duration-300 text-secondary-dark-mid"
-                    [ngClass]="{
-                      'rotate-180': isExamQuestionsOpen,
-                      'rotate-0': !isExamQuestionsOpen
-                    }"
-                  ></fa-icon>
-                </button>
                 <span
                   class="mt-2 text-lg font-semibold text-secondary-dark-dark"
                 >
                   Exam Questions
                 </span>
               </div>
-              <div *ngIf="isExamQuestionsOpen" class="border-t">
-                <app-worksheet-question-list
-                  *ngFor="let exam of exams; let i = index"
-                  [exam]="exam.year"
-                  [questions]="exam.questions"
-                  (addAnswer)="addAnswerPage($event)"
-                >
-                </app-worksheet-question-list>
-              </div>
-            </div>
-
-            <!-- Marking Schemes Section -->
-            <div class="pb-2 bg-white border-t">
-              <div
-                class="flex items-center justify-start pl-2 cursor-pointer bg-background-default"
-                (click)="isMarkingSchemesOpen = !isMarkingSchemesOpen"
-              >
-                <button
-                  class="flex items-center justify-center w-8 h-8 mt-2 mr-2 transition-colors duration-200 rounded-full border-secondary-dark-mid hover:bg-gray-100 focus:outline-none"
-                  aria-label="Toggle chapter"
-                >
-                  <fa-icon
-                    [icon]="icons.faChevronDown"
-                    class="transition-transform duration-300 text-secondary-dark-mid"
-                    [ngClass]="{
-                      'rotate-180': isMarkingSchemesOpen,
-                      'rotate-0': !isMarkingSchemesOpen
-                    }"
-                  ></fa-icon>
-                </button>
-                <span
-                  class="mt-2 text-lg font-semibold text-secondary-dark-dark"
-                >
-                  Marking Schemes
-                </span>
-              </div>
-              <div *ngIf="isMarkingSchemesOpen" class="border-t">
+              <div class="border-t">
                 <app-worksheet-question-list
                   *ngFor="let exam of exams; let i = index"
                   [exam]="exam.year"
