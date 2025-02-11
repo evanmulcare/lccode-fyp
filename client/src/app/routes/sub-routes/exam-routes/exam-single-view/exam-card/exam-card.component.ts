@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { faDownload, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-exam-card',
   templateUrl: './exam-card.component.html',
@@ -7,8 +6,4 @@ import { faDownload, faPlay } from '@fortawesome/free-solid-svg-icons';
 })
 export class ExamCardComponent {
   @Input() image: string | '' | undefined;
-  icons = {
-    faDownload,
-    faPlay,
-  };
 }

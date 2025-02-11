@@ -1,0 +1,94 @@
+<div class="max-w-screen-lg mx-auto">
+  <div class="flex justify-between p-5 mt-5 mb-4 bg-white rounded-lg">
+    <h1 class="flex items-center text-xl font-semibold">
+      <button
+        class="flex items-center px-2 py-1 mr-4 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
+        routerLink="/practice"
+      >
+        <fa-icon [icon]="icons.faChevronLeft" class="text-gray-600"></fa-icon>
+      </button>
+      {{ questionData?.question }}
+    </h1>
+
+    <div class="flex space-x-3">
+      <div
+        class="px-4 py-2 text-sm font-medium text-red-600 bg-red-200 rounded-full cursor-pointer"
+      >
+        {{ questionData?.topic }}
+      </div>
+
+      <div
+        class="px-4 py-2 text-sm font-medium text-orange-600 bg-orange-200 rounded-full cursor-pointer"
+      >
+        {{ questionData?.type }}
+      </div>
+      <div
+        class="px-4 py-2 text-sm font-medium text-pink-600 bg-pink-200 rounded-full cursor-pointer"
+      >
+        {{ questionData?.level }}
+        Level
+      </div>
+    </div>
+  </div>
+
+  <app-question-card [isFlipped]="isFlipped" (click)="toggleFlip()">
+    <div front-content>
+      <img
+        [src]="questionData?.['IMG-URL']"
+        alt="Question Image"
+        style="width: 100%; height: auto; object-fit: cover"
+      />
+    </div>
+    <div back-content>
+      <img
+        [src]="questionData?.['MARKING-IMG-URL']"
+        alt="ANSWER Image"
+        style="width: 100%; height: auto; object-fit: cover"
+      />
+    </div>
+  </app-question-card>
+
+  <div class="flex justify-between p-5 mt-5 mb-4 bg-white rounded-lg">
+    <button
+      class="px-4 py-2 text-blue-500 border border-blue-500 rounded-lg hover:bg-blue-100 focus:outline-none"
+      (click)="toggleOverlay()"
+    >
+      Video Solution
+    </button>
+
+    <div class="flex space-x-2">
+      <button
+        (click)="toggleFlip()"
+        class="px-4 py-2 border rounded-lg text-secondary-dark-mid border-secondary-dark-mid"
+      >
+        {{ isFlipped ? "Show Question" : "Show Answer" }}
+      </button>
+
+      <div class="px-4 py-2 text-white rounded-lg bg-primary-green-light">
+        Mark as Complete
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="isOverlayVisible"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+  (click)="closeOverlay()"
+>
+  <button
+    class="absolute text-2xl text-white duration-300 top-4 right-4 hover:text-red-500"
+    (click)="closeOverlay()"
+  >
+    <fa-icon [icon]="icons.faTimes"></fa-icon>
+  </button>
+  <div
+    class="relative flex items-center justify-center w-full h-full max-w-4xl mx-4 md:mx-12 lg:mx-24"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="relative w-full p-1 bg-black rounded-md">
+      <app-video-player
+        videoSource="https://player.vimeo.com/video/694118427?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+      ></app-video-player>
+    </div>
+  </div>
+</div>

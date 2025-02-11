@@ -1,0 +1,10 @@
+<div class="flip-container" [ngClass]="{ flipped: isFlipped }">
+  <div class="flipper">
+    <div class="front">
+      <ng-content select="[front-content]"></ng-content>
+    </div>
+    <div class="back">
+      <ng-content select="[back-content]"></ng-content>
+    </div>
+  </div>
+</div>

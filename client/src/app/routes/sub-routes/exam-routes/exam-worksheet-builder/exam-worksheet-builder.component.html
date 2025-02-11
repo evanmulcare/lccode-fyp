@@ -11,7 +11,7 @@
           <div class="flex items-center space-x-4">
             <button
               class="flex items-center px-4 py-2 text-white transition-transform transform rounded-md bg-secondary-dark-mid hover:bg-secondary-dark hover:scale-95"
-              routerLink="/exam"
+              routerLink="/practice"
             >
               <fa-icon [icon]="icons.faChevronLeft" class="mr-2"></fa-icon>
               Back
@@ -177,6 +177,7 @@
                   Exam Questions
                 </span>
               </div>
+
               <div class="border-t">
                 <app-worksheet-question-list
                   *ngFor="let exam of exams; let i = index"

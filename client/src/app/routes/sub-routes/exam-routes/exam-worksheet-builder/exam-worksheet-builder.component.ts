@@ -20,6 +20,7 @@ import {
   orderBy,
 } from 'firebase/firestore';
 import { ExamData } from 'src/app/models/examData';
+import { question1Data } from 'src/assets/exams/questions/2024/section_a/q1/question1-data';
 
 @Component({
   selector: 'app-exam-worksheet-builder',
@@ -88,11 +89,17 @@ export class ExamWorksheetBuilderComponent {
           year: data['year'],
           questions: [
             {
+              id: doc.id,
+              question: data['question'] || '',
               order: data['order'],
               topic: data['topic'],
               year: data['year'],
               section: data['section'],
               description: data['description'],
+              isComplete: data['isComplete'] || false,
+              style: data['style'] || 'exam',
+              type: data['type'] || 'Short Answer',
+              level: data['level'] || 'N/A',
               'IMG-URL': data['IMG-URL'],
               'PDF-URL': data['PDF-URL'],
               'MARKING-IMG-URL': data['MARKING-IMG-URL'],
