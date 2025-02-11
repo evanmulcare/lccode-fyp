@@ -36,6 +36,12 @@ import { WorksheetQuestionCardComponent } from './routes/sub-routes/exam-routes/
 import { AngularSplitModule } from 'angular-split';
 import { WorksheetQuestionListComponent } from './routes/sub-routes/exam-routes/exam-worksheet-builder/worksheet-question-list/worksheet-question-list.component';
 import { LoginComponent } from './routes/login/login.component';
+import { PracticeComponent } from './routes/practice/practice.component';
+import { ExamMaterialCardComponent } from './routes/practice/exam-material-card/exam-material-card.component';
+import { PracticeTableComponent } from './routes/practice/practice-table/practice-table.component';
+import { PracticeSingleViewComponent } from './routes/sub-routes/exam-routes/practice-single-view/practice-single-view.component';
+import { QuestionCardComponent } from './routes/sub-routes/exam-routes/practice-single-view/question-card/question-card.component';
+import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-material-view/exam-material-view.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +72,12 @@ import { LoginComponent } from './routes/login/login.component';
     WorksheetQuestionCardComponent,
     WorksheetQuestionListComponent,
     LoginComponent,
+    PracticeComponent,
+    ExamMaterialCardComponent,
+    PracticeTableComponent,
+    PracticeSingleViewComponent,
+    QuestionCardComponent,
+    ExamMaterialViewComponent,
   ],
   imports: [
     BrowserModule,

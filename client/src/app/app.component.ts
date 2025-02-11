@@ -23,7 +23,8 @@ export class AppComponent {
     const shouldHideMasthead =
       (url.startsWith('/courses/') && url.split('/').length === 4) ||
       url === '/login' ||
-      url === '/worksheets/new';
+      url === '/worksheets/new' ||
+      url.includes('/practice/questions');
     this.navbarService.setShowNavbar(!shouldHideMasthead);
   }
 }

@@ -1,0 +1,100 @@
+<div class="overflow-x-hidden">
+  <table class="w-full divide-y divide-gray-200 table-auto">
+    <thead class="bg-gray-50">
+      <tr class="text-xs sm:text-sm lg:text-base">
+        <th
+          class="px-2 py-1 font-semibold tracking-wider text-left text-gray-500 uppercase sm:px-4 sm:py-2 lg:px-6 lg:py-3"
+        >
+          Status
+        </th>
+        <th
+          class="px-2 py-1 font-semibold tracking-wider text-left text-gray-500 uppercase sm:px-4 sm:py-2 lg:px-6 lg:py-3"
+        >
+          Question
+        </th>
+        <th
+          class="px-2 py-1 font-semibold tracking-wider text-gray-500 uppercase sm:px-4 sm:py-2 lg:px-6 lg:py-3"
+        >
+          Topic
+        </th>
+        <th
+          class="px-2 py-1 font-semibold tracking-wider text-gray-500 uppercase sm:px-4 sm:py-2 lg:px-6 lg:py-3"
+        >
+          Type
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr
+        *ngFor="let question of questions; let i = index"
+        [ngClass]="{
+          'bg-primary-green-light/30': question.isComplete,
+          'bg-white': !question.isComplete && i % 2 === 0,
+          'bg-background': !question.isComplete && i % 2 !== 0
+        }"
+        class="text-xs transition-colors duration-300 sm:text-sm lg:text-base hover:bg-primary-green-light/20"
+      >
+        <td class="px-2 py-1 sm:px-4 sm:py-2 lg:px-6 lg:py-3">
+          <input
+            type="checkbox"
+            [checked]="question.isComplete"
+            (change)="toggleStatus(question)"
+            class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 custom-checkbox"
+          />
+        </td>
+
+        <td class="px-2 py-1 text-gray-700 sm:px-4 sm:py-2 lg:px-6 lg:py-3">
+          <a
+            (click)="navigateToQuestion(question.id)"
+            class="flex items-center w-full transition-colors duration-300 ease-in-out hover:text-primary-green-light"
+          >
+            <ng-container [ngSwitch]="question.style">
+              <fa-icon
+                *ngSwitchCase="'code'"
+                [icon]="icons.faCode"
+                class="text-xs sm:text-sm lg:text-base"
+              ></fa-icon>
+              <fa-icon
+                *ngSwitchCase="'exam'"
+                [icon]="icons.faPen"
+                class="text-xs sm:text-sm lg:text-base"
+              ></fa-icon>
+            </ng-container>
+            <span
+              class="w-full ml-1 text-xs font-semibold truncate sm:text-sm lg:text-base text-secondary-dark-dark"
+            >
+              {{ question.question }}
+            </span>
+          </a>
+        </td>
+
+        <td class="px-2 py-1 text-center sm:px-4 sm:py-2 lg:px-6 lg:py-3">
+          <span
+            class="px-2 py-1 text-xs text-white rounded-full bg-secondary-dark-light sm:text-sm lg:text-base"
+          >
+            {{ question.topic }}
+          </span>
+        </td>
+
+        <!-- Type Badge -->
+        <td class="px-2 py-1 text-center sm:px-4 sm:py-2 lg:px-6 lg:py-3">
+          <span
+            class="px-2 py-1 text-xs rounded-full sm:text-sm lg:text-base"
+            [ngClass]="{
+              'text-pink-600 bg-pink-200': question.type === 'Short Answer',
+              'text-purple-600 bg-purple-200': question.type === 'Long Answer',
+              'text-teal-600 bg-teal-200': question.type === 'Coding Answer',
+              'text-secondary-dark-light': ![
+                'Multiple Choice',
+                'Short Answer',
+                'Essay'
+              ].includes(question.type)
+            }"
+          >
+            {{ question.type }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

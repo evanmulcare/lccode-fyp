@@ -1,0 +1,28 @@
+<div
+  class="relative flex items-center justify-center gap-4 p-4 text-center transition bg-gray-100 rounded-lg shadow hover:bg-gray-200"
+>
+  <div
+    class="absolute z-10 px-4 py-1 text-sm font-semibold text-white -translate-x-1/2 bg-black bg-opacity-75 rounded-lg top-2 left-1/2"
+  >
+    {{ year }}
+  </div>
+
+  <div
+    class="absolute inset-0 z-10 flex items-center justify-center transition-opacity bg-black opacity-0 bg-opacity-30 hover:opacity-100"
+  >
+    <fa-icon
+      [icon]="icons.faDownload"
+      class="text-3xl text-white cursor-pointer"
+      (click)="downloadMaterial()"
+    ></fa-icon>
+  </div>
+
+  <app-exam-card
+    [image]="image1"
+    class="flex items-center justify-center flex-1 max-w-sm"
+  ></app-exam-card>
+  <app-exam-card
+    [image]="image2"
+    class="flex items-center justify-center flex-1 max-w-sm"
+  ></app-exam-card>
+</div>
