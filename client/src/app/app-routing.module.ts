@@ -12,6 +12,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { PracticeComponent } from './routes/practice/practice.component';
 import { PracticeSingleViewComponent } from './routes/sub-routes/exam-routes/practice-single-view/practice-single-view.component';
 import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-material-view/exam-material-view.component';
+import { ProgressComponent } from './routes/progress/progress.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -29,7 +30,6 @@ const routes: Routes = [
     component: ExamMaterialViewComponent,
     canActivate: [AuthGuard],
   },
-
   {
     path: 'practice/questions/:question',
     component: PracticeSingleViewComponent,
@@ -51,6 +51,8 @@ const routes: Routes = [
     component: CourseContainerComponent,
     canActivate: [AuthGuard],
   },
+  { path: 'progress', component: ProgressComponent, canActivate: [AuthGuard] },
+
   { path: '**', redirectTo: '/' },
 ];
 

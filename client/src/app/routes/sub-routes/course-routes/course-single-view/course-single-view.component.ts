@@ -36,22 +36,22 @@ export class CourseSingleViewComponent implements OnInit {
     private courseService: CourseService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const courseId = this.route.snapshot.params['courseId'];
+    this.course = await this.courseService.loadCourseById(courseId);
+    await this.courseService.loadLessons();
 
-    this.courseService.getCourse(courseId).subscribe((course) => {
-      this.course = course;
-      if (course) {
-        this.sections = course.sections;
-        this.loadLessonsForSections(courseId, course.sections);
+    if (this.course) {
+      this.sections = this.course.sections;
+      this.loadLessonsForSections(courseId, this.course.sections);
 
-        this.courseService
-          .getPrerequisiteCourses(courseId)
-          .subscribe((prerequisites) => {
-            this.prerequisiteCourses = prerequisites;
-          });
-      }
-    });
+      // Fetch prerequisite courses
+      this.courseService
+        .getPrerequisiteCourses(courseId)
+        .subscribe((prerequisites) => {
+          this.prerequisiteCourses = prerequisites;
+        });
+    }
   }
 
   private loadLessonsForSections(courseId: string, sections: Section[]): void {

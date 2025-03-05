@@ -1,0 +1,137 @@
+<div class="container max-w-4xl px-6 py-8 mx-auto">
+  <div class="mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">
+      {{ currentUser?.firstname }}, continue current learning...
+    </h2>
+
+    <div *ngIf="mostRecentCourse && mostRecentLessonData" class="mt-4">
+      <div
+        class="flex items-center justify-between p-6 transition-shadow duration-300 bg-white rounded-lg shadow-lg hover:shadow-xl"
+      >
+        <div class="flex-1">
+          <div class="text-sm font-semibold text-gray-800 truncate">
+            {{ mostRecentCourse.title }}
+          </div>
+
+          <div class="mt-2 text-lg font-bold text-gray-900 truncate">
+            {{ mostRecentLessonData.content }}
+          </div>
+        </div>
+
+        <div class="flex justify-center mt-4">
+          <a
+            [routerLink]="[
+              '/courses',
+              mostRecentCourse.id,
+              mostRecentLesson?.lessonId
+            ]"
+            class="flex items-center justify-center w-12 h-12 text-white transition-transform transform rounded-full hover:scale-105 bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            aria-label="Play Course"
+          >
+            <fa-icon [icon]="icons.faPlay" class="text-2xl"></fa-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 mb-6 bg-white rounded-lg shadow-md">
+    <h3 class="mb-4 text-xl font-bold text-gray-700">Exam Question Metrics</h3>
+
+    <div class="space-y-4">
+      <div>
+        <div class="flex justify-between font-medium text-gray-600">
+          <span>Section A</span>
+          <span>{{ sectionCounts.A }} / 20</span>
+        </div>
+        <div class="w-full h-2 mt-1 bg-gray-200 rounded-full">
+          <div
+            class="h-2 bg-blue-500 rounded-full"
+            [style.width.%]="getCompletionPercentage('A')"
+          ></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between font-medium text-gray-600">
+          <span>Section B</span>
+          <span>{{ sectionCounts.B }} / 15</span>
+        </div>
+        <div class="w-full h-2 mt-1 bg-gray-200 rounded-full">
+          <div
+            class="h-2 bg-green-500 rounded-full"
+            [style.width.%]="getCompletionPercentage('B')"
+          ></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between font-medium text-gray-600">
+          <span>Section C</span>
+          <span>{{ sectionCounts.C }} / 32</span>
+        </div>
+        <div class="w-full h-2 mt-1 bg-gray-200 rounded-full">
+          <div
+            class="h-2 bg-purple-500 rounded-full"
+            [style.width.%]="getCompletionPercentage('C')"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-xl font-bold text-gray-700">
+      Recently Completed Questions
+    </h2>
+
+    <div *ngIf="recentQuestionDetails.length > 0; else noQuestions">
+      <ul class="mt-2 text-gray-600">
+        <li
+          *ngFor="let question of recentQuestionDetails"
+          class="py-2 border-b"
+        >
+          <div class="flex items-center justify-between">
+            <a
+              class="items-center flex-1 w-full text-sm transition-colors duration-300 ease-in-out hover:text-primary-green-light hover:cursor-pointer"
+              [routerLink]="['/practice/questions', question.id]"
+            >
+              <ng-container [ngSwitch]="question.style">
+                <fa-icon
+                  *ngSwitchCase="'code'"
+                  [icon]="icons.faCode"
+                  class="text-xs sm:text-sm lg:text-base"
+                ></fa-icon>
+                <fa-icon
+                  *ngSwitchCase="'exam'"
+                  [icon]="icons.faPen"
+                  class="text-xs sm:text-sm lg:text-base"
+                ></fa-icon>
+              </ng-container>
+              <span
+                class="w-full ml-1 font-semibold truncate lg:text-base text-secondary-dark-dark"
+              >
+                {{ question.title }}
+              </span>
+            </a>
+
+            <div class="ml-4 text-sm text-gray-500">
+              {{ question.completedAt | date : "short" }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #noQuestions>
+      <p class="mt-4 text-lg font-semibold text-center text-gray-600">
+        No recent questions completed.
+        <span
+          class="text-blue-400 underline cursor-pointer"
+          [routerLink]="['/practice']"
+          >Practice Now?</span
+        >
+      </p>
+    </ng-template>
+  </div>
+</div>

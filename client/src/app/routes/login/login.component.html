@@ -74,6 +74,141 @@
       >
         Login
       </button>
+      <button
+        type="button"
+        (click)="loginWithGoogle()"
+        class="w-full px-4 py-2 mt-2 font-bold text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Sign in with Google
+      </button>
+      <button
+        type="button"
+        (click)="openModal()"
+        class="w-full px-4 py-2 mt-2 font-bold transition-colors duration-300 ease-in-out border-2 rounded-md shadow-sm text-secondary-dark-mid border-secondary-dark-mid hover:bg-secondary-dark-mid hover:text-white focus:outline-none focus:ring-2 focus:ring-secondary-darkest-mid focus:ring-offset-2"
+      >
+        Create Account
+      </button>
     </form>
+  </div>
+
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-75"
+  >
+    <div
+      class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md sm:w-1/3"
+    >
+      <div class="flex flex-col items-center mb-8 space-y-4">
+        <button
+          class="absolute px-4 py-2 text-white transition transform rounded-md top-4 left-4 bg-secondary-dark-mid hover:bg-secondary-dark hover:scale-95"
+          (click)="closeModal()"
+        >
+          <fa-icon [icon]="icons.faChevronLeft" class="mr-2"></fa-icon>
+          Back to Login
+        </button>
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="70"
+            height="70"
+            viewBox="0 0 100 125"
+            class="w-16 h-16 sm:w-24 sm:h-24 text-primary-green"
+          >
+            <g>
+              <path
+                d="M80.845,5H19.155C12.1,5,6.359,10.74,6.359,17.795v64.409C6.359,89.26,12.1,95,19.155,95h61.689   c7.056,0,12.796-5.74,12.796-12.796V17.795C93.641,10.74,87.9,5,80.845,5z M68.146,10.631c4.952,0,8.98,4.027,8.98,8.976v48.083   c0,4.952-4.028,8.98-8.98,8.98H30.947c-4.949,0-8.976-4.028-8.976-8.98V19.607c0-4.949,4.027-8.976,8.976-8.976H68.146z    M8.359,17.795C8.359,11.843,13.203,7,19.155,7h54.554l-5.703,1.631H30.947c-6.052,0-10.976,4.924-10.976,10.976v47.687   L8.359,79.676V17.795z"
+                fill="#12a588"
+              />
+            </g>
+          </svg>
+        </div>
+
+        <p class="text-center text-md text-secondary-dark-mid">
+          <strong class="text-xl">Create an Account</strong><br />
+          Please fill in the details to create an account.
+        </p>
+      </div>
+
+      <form (ngSubmit)="signUp()" class="space-y-4">
+        <div>
+          <label
+            for="firstname"
+            class="block text-sm font-medium text-secondary-dark-mid"
+          >
+            First Name
+          </label>
+          <input
+            type="text"
+            id="firstname"
+            [(ngModel)]="firstname"
+            name="firstname"
+            class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+            placeholder="Enter your first name"
+            required
+          />
+        </div>
+
+        <div>
+          <label
+            for="lastname"
+            class="block text-sm font-medium text-secondary-dark-mid"
+          >
+            Last Name
+          </label>
+          <input
+            type="text"
+            id="lastname"
+            [(ngModel)]="lastname"
+            name="lastname"
+            class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+            placeholder="Enter your last name"
+            required
+          />
+        </div>
+
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-medium text-secondary-dark-mid"
+          >
+            Email
+          </label>
+          <input
+            type="signUpEmail"
+            id="signUpEmail"
+            [(ngModel)]="signUpEmail"
+            name="signUpEmail"
+            class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div>
+          <label
+            for="password"
+            class="block text-sm font-medium text-secondary-dark-mid"
+          >
+            Password
+          </label>
+          <input
+            type="signUpPassword"
+            id="signUpPassword"
+            [(ngModel)]="signUpPassword"
+            name="signUpPassword"
+            class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-secondary-dark-light focus:outline-none focus:ring-primary-green-light focus:border-primary-green-light sm:text-sm"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full px-4 py-2 font-bold text-white rounded-md shadow-sm bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-primary-green focus:ring-offset-2"
+        >
+          Create Account
+        </button>
+      </form>
+    </div>
   </div>
 </div>

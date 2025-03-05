@@ -3,126 +3,130 @@ import { Observable, of } from 'rxjs';
 import { Lesson } from 'src/app/models/lesson';
 import { Course } from 'src/app/models/course';
 import { Section } from 'src/app/models/section';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+} from 'firebase/firestore';
+import { AuthService } from '../firebase/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService {
-  private courses: Course[] = [
-    {
-      id: '1',
-      title: 'Introduction Course',
-      description: 'This is a course for testing and introduction to platform',
-      category: '1',
-      locked: false,
-      strand: 'Testing',
-      resourcesSrc:
-        '../../../../assets/markdown/resources/introduction_course_resources.md',
-      prerequisites: ['2', '6'],
-      sections: [
-        {
-          id: '1',
-          title: 'Overview',
-          lessons: ['1'],
-        },
-        {
-          id: '2',
-          title: 'Goals',
-          lessons: ['2'],
-        },
-        {
-          id: '3',
-          title: 'Layout',
-          lessons: ['3'],
-        },
-        {
-          id: '4',
-          title: 'Documentation',
-          lessons: ['4'],
-        },
-        {
-          id: '5',
-          title: 'Feedback',
-          lessons: ['5'],
-        },
-        {
-          id: '6',
-          title: 'Examples',
-          lessons: ['6', '7', '8'],
-        },
-      ],
-    },
-  ];
+  courses: Course[] = [];
+  lessons: Lesson[] = [];
 
-  private lessons: Lesson[] = [
-    {
-      id: '1',
-      courseId: '1',
-      type: 'note',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/background.md',
-      content: 'Background - Why LCCode',
-    },
-    {
-      id: '2',
-      courseId: '1',
-      type: 'note',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/features.md',
-      content: 'Features and Requirements',
-    },
-    {
-      id: '3',
-      courseId: '1',
-      type: 'note',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/sections.md',
-      content: 'Sections',
-    },
-    {
-      id: '4',
-      courseId: '1',
-      type: 'note',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/docs.md',
-      content: 'Accessing Docs',
-    },
-    {
-      id: '5',
-      courseId: '1',
-      type: 'note',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/contact.md',
-      content: 'contact information',
-    },
-    {
-      id: '6',
-      courseId: '1',
-      type: 'note',
-      videoSrc:
-        'https://player.vimeo.com/video/694118427?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479',
-      src: '../../../../assets/markdown/introduction/note-example.md',
-      content: 'Note Example',
-    },
-    {
-      id: '7',
-      courseId: '1',
-      type: 'code',
-      videoSrc: '',
-      src: '../../../../assets/markdown/introduction/code-example.md',
-      content: 'Coding Example',
-    },
-    {
-      id: '8',
-      courseId: '1',
-      type: 'exam',
-      videoSrc: '',
-      src: '',
-      content: 'Exam Example',
-    },
-  ];
+  constructor(private auth: AuthService) {}
 
-  constructor() {}
+  async loadCourses(): Promise<void> {
+    try {
+      const db = getFirestore();
+      const coursesCollection = collection(db, 'courses');
+      const querySnapshot = await getDocs(coursesCollection);
+
+      this.courses = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data['title'] || '',
+          description: data['description'] || '',
+          category: data['category'] || '',
+          locked: data['locked'] || false,
+          strand: data['strand'] || '',
+          resourcesSrc: data['resourcesSrc'] || '',
+          prerequisites: data['prerequisites'] || [],
+          sections: data['sections'] || [],
+          progress: 0,
+        } as Course;
+      });
+    } catch (error: any) {
+      console.error('Error loading courses:', error);
+    }
+  }
+
+  async loadCourseById(courseId: string): Promise<Course | null> {
+    try {
+      const db = getFirestore();
+      const courseRef = doc(db, 'courses', courseId);
+      const courseDoc = await getDoc(courseRef);
+
+      if (courseDoc.exists()) {
+        const data = courseDoc.data();
+        const course: Course = {
+          id: courseDoc.id,
+          title: data['title'] || '',
+          description: data['description'] || '',
+          category: data['category'] || '',
+          locked: data['locked'] || false,
+          strand: data['strand'] || '',
+          resourcesSrc: data['resourcesSrc'] || '',
+          prerequisites: data['prerequisites'] || [],
+          sections: data['sections'] || [],
+          progress: 0,
+        };
+        return course;
+      } else {
+        console.log('No such course found!');
+        return null;
+      }
+    } catch (error: any) {
+      console.error('Error loading course:', error);
+      return null;
+    }
+  }
+
+  async loadLessons(): Promise<void> {
+    try {
+      const db = getFirestore();
+      const lessonsCollection = collection(db, 'lessons');
+      const querySnapshot = await getDocs(lessonsCollection);
+
+      this.lessons = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          courseId: data['courseId'] || '',
+          type: data['type'] || 'note',
+          videoSrc: data['video-source'] || '',
+          src: data['source'] || '',
+          content: data['content'] || '',
+          order: data['order'],
+          isComplete: false,
+        } as Lesson;
+      });
+
+      const user = this.auth.getCurrentUser();
+      this.lessons.forEach((lesson) => {
+        if (
+          user?.completedLessons.some(
+            (completed) => completed.lessonId === lesson.id
+          )
+        ) {
+          lesson.isComplete = true;
+        }
+      });
+
+      this.courses.forEach((course) => {
+        this.updateCourseProgress(course);
+      });
+      console.log('new progress', this.courses);
+    } catch (error: any) {
+      console.error('Error loading lessons:', error);
+    }
+  }
+
+  updateCourseProgress(course: Course): void {
+    const allLessons = this.lessons.filter(
+      (lesson) => lesson.courseId === course.id
+    );
+    const completedLessons = allLessons.filter(
+      (lesson) => lesson.isComplete
+    ).length;
+    course.progress = (completedLessons / allLessons.length) * 100;
+  }
 
   getCourse(courseId: string): Observable<Course | null> {
     const course = this.courses.find((c) => c.id === courseId) || null;

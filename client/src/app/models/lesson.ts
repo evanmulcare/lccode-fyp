@@ -5,4 +5,6 @@ export interface Lesson {
   content: string;
   src: string;
   videoSrc: string;
+  order: number;
+  isComplete: boolean;
 }

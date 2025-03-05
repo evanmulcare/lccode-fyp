@@ -1,14 +1,14 @@
 <div class="flex justify-between p-5 mb-4 bg-white rounded-lg">
   <h1
     class="flex items-center text-xl font-semibold"
-    [ngClass]="{ 'line-through': isCompleted }"
+    [ngClass]="{ 'line-through': currentLesson?.isComplete }"
   >
     <span class="flex items-center mr-3">
       <label class="inline-flex items-center cursor-pointer">
         <input
           type="checkbox"
-          [checked]="isCompleted"
-          (change)="toggleCompletion()"
+          [checked]="currentLesson?.isComplete"
+          (change)="toggleCompletion(currentLesson)"
           class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 custom-checkbox"
         />
       </label>

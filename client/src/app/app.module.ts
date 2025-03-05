@@ -6,6 +6,8 @@ import { MarkdownModule } from 'ngx-markdown';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+
 import { environment } from 'environments/environment';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './routes/home/home.component';
@@ -42,6 +44,9 @@ import { PracticeTableComponent } from './routes/practice/practice-table/practic
 import { PracticeSingleViewComponent } from './routes/sub-routes/exam-routes/practice-single-view/practice-single-view.component';
 import { QuestionCardComponent } from './routes/sub-routes/exam-routes/practice-single-view/question-card/question-card.component';
 import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-material-view/exam-material-view.component';
+import { ProgressComponent } from './routes/progress/progress.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -78,14 +83,17 @@ import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-
     PracticeSingleViewComponent,
     QuestionCardComponent,
     ExamMaterialViewComponent,
+    ProgressComponent,
   ],
   imports: [
     BrowserModule,
+
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    provideAuth(() => getAuth()),
     MarkdownModule.forRoot({ loader: HttpClient }),
     MonacoEditorModule.forRoot(),
     AngularSplitModule,

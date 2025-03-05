@@ -24,14 +24,14 @@ export class CourseTopnavComponent {
   }
 
   ngOnInit() {
-    this.updateProgress();
+    this.course$.subscribe((course) => {
+      if (course) {
+        this.progressPercentage = course.progress;
+      }
+    });
   }
 
   toggleSidebar() {
     this.courseContainerService.toggleSidebar();
-  }
-
-  updateProgress() {
-    this.progressPercentage = 0;
   }
 }

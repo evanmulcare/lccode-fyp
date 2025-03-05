@@ -1,5 +1,13 @@
+export interface CompletedLesson {
+  lessonId: string;
+  completedAt: number;
+  type: 'lesson' | 'question';
+}
+
 export interface User {
-  id: string;
-  name: string;
-  completedLessons: string[];
+  id?: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  completedLessons: CompletedLesson[];
 }

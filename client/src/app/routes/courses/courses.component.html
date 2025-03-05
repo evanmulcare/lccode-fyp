@@ -13,7 +13,8 @@
           class="flex px-4 space-x-4 md:px-8 lg:px-16 md:space-x-6 lg:space-x-8 w-max"
         >
           <app-course-card
-            [course]="card"
+            *ngFor="let course of courses"
+            [course]="course"
             class="flex-shrink-0 w-60 sm:w-64 md:w-72"
           ></app-course-card>
         </div>

@@ -60,9 +60,11 @@ export class CourseContainerService {
           return this.courseService.getAllLessons(courseId);
         }),
         tap((lessons) => {
-          this.allLessonsSubject.next(lessons);
+          const sortedLessons = lessons.sort((a, b) => a.order - b.order);
+          this.allLessonsSubject.next(sortedLessons);
+
           if (lessonId) {
-            const currentLesson = lessons.find(
+            const currentLesson = sortedLessons.find(
               (lesson) => lesson.id === lessonId
             );
             if (currentLesson) {
@@ -73,7 +75,6 @@ export class CourseContainerService {
       )
       .subscribe();
   }
-
   loadLesson(courseId: string, lessonId: string) {
     this.courseService
       .getLesson(courseId, lessonId)

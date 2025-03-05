@@ -63,10 +63,23 @@
       >
         {{ isFlipped ? "Show Question" : "Show Answer" }}
       </button>
-
-      <div class="px-4 py-2 text-white rounded-lg bg-primary-green-light">
-        Mark as Complete
+      <div *ngIf="isQuestionCompleted; else notCompleted">
+        <div
+          class="px-4 py-2 text-white bg-red-500 rounded-lg"
+          (click)="markAsNotComplete()"
+        >
+          Mark as Not Complete
+        </div>
       </div>
+
+      <ng-template #notCompleted>
+        <div
+          class="px-4 py-2 text-white rounded-lg bg-primary-green-light"
+          (click)="markAsComplete()"
+        >
+          Mark as Complete
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

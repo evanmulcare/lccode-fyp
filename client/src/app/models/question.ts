@@ -6,4 +6,5 @@ export interface Question {
   topic: string;
   style: string;
   source: string;
+  section: 'A' | 'B' | 'C';
 }

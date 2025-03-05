@@ -10,4 +10,5 @@ export interface Course {
   resourcesSrc: string;
   sections: Section[];
   prerequisites: string[];
+  progress: number;
 }

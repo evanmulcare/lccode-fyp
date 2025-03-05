@@ -16,11 +16,11 @@
       <div class="relative w-full h-2 rounded-full bg-secondary-dark-light">
         <div
           class="absolute top-0 left-0 h-2 transition-all duration-300 rounded-full bg-primary-green"
-          [style.width]="progressPercentage + '%'"
+          [style.width]="(course$ | async)?.progress + '%'"
         ></div>
       </div>
       <span class="ml-2 text-xs font-medium text-secondary-dark-mid">
-        {{ progressPercentage }}%
+        {{ (course$ | async)?.progress }}%
       </span>
     </div>
   </div>

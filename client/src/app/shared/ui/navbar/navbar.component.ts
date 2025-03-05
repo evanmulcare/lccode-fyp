@@ -6,6 +6,7 @@ import {
   faPlay,
   faExclamation,
   faRightFromBracket,
+  faChartBar,
 } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../services/firebase/auth.service';
 
@@ -22,6 +23,7 @@ export class NavbarComponent {
     faUsers,
     faExclamation,
     faRightFromBracket,
+    faChartBar,
   };
 
   constructor(private auth: AuthService) {}
