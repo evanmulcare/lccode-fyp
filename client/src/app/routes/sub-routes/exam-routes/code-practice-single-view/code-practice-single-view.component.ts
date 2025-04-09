@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CodeQuestion } from 'src/app/models/code-question';
 import { faChevronLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { ExamQuestion } from 'src/app/models/exam-question';
 import { QuestionService } from 'src/app/shared/services/firebase/question.service';
 
 @Component({
-  selector: 'app-practice-single-view',
-  templateUrl: './practice-single-view.component.html',
-  styleUrls: ['./practice-single-view.component.css'],
+  selector: 'app-code-practice-single-view',
+  templateUrl: './code-practice-single-view.component.html',
+  styleUrls: ['./code-practice-single-view.component.css'],
 })
-export class PracticeSingleViewComponent {
+export class CodePracticeSingleViewComponent {
   icons = {
     faChevronLeft,
     faTimes,
   };
-  isFlipped = false;
-  questionData: ExamQuestion | null = null;
+
+  questionData: CodeQuestion | null = null;
   questionId: string = '';
   isQuestionCompleted = false;
   constructor(
@@ -23,51 +23,44 @@ export class PracticeSingleViewComponent {
     private questionService: QuestionService
   ) {}
 
-  isOverlayVisible = false;
-
-  toggleOverlay() {
-    this.isOverlayVisible = !this.isOverlayVisible;
-  }
-
-  closeOverlay() {
-    this.isOverlayVisible = false;
-  }
-
-  toggleFlip() {
-    this.isFlipped = !this.isFlipped;
-  }
-
   async ngOnInit() {
-    await this.loadExamQuestion();
+    await this.loadCodeQuestion();
     this.isQuestionCompleted = await this.questionService.isQuestionCompleted(this.questionId);
   }
 
-  async loadExamQuestion() {
+  async loadCodeQuestion() {
     const questionId = this.route.snapshot.paramMap.get('question');
     if (!questionId) return;
-
-    const question = await this.questionService.getExamQuestionById(questionId);
+  
+    const question = await this.questionService.getCodeQuestionById(questionId);
+  
     if (question) {
       this.questionData = question;
       this.questionId = question.id;
     }
-  }
+  }  
 
   async markAsComplete() {
-    if (!this.questionData?.id) return;
+    if (!this.questionData?.id) {
+      console.error('Question ID missing');
+      return;
+    }
 
-    const completed = await this.questionService.markAsComplete(
+    const result = await this.questionService.markAsComplete(
       this.questionData.id,
       'question'
     );
 
-    if (completed) {
+    if (result) {
       this.isQuestionCompleted = true;
     }
   }
 
   async markAsNotComplete() {
-    if (!this.questionData?.id) return;
+    if (!this.questionData?.id) {
+      console.error('Question ID missing');
+      return;
+    }
 
     const success = await this.questionService.markAsNotComplete(
       this.questionData.id

@@ -1,3 +1,33 @@
+<div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    (input)="applyFilters()"
+    placeholder="Search questions..."
+    class="w-64 p-2 border rounded"
+  />
+
+  <div class="flex flex-wrap gap-4">
+    <select
+      [(ngModel)]="selectedTopic"
+      (change)="applyFilters()"
+      class="p-2 border rounded"
+    >
+      <option value="">All Topics</option>
+      <option *ngFor="let topic of topics" [value]="topic">{{ topic }}</option>
+    </select>
+
+    <select
+      [(ngModel)]="selectedType"
+      (change)="applyFilters()"
+      class="p-2 border rounded"
+    >
+      <option value="">All Types</option>
+      <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+</div>
+
 <div class="overflow-x-hidden">
   <table class="w-full divide-y divide-gray-200 table-auto">
     <thead class="bg-gray-50">
@@ -26,7 +56,13 @@
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
       <tr
-        *ngFor="let question of questions; let i = index"
+        *ngFor="
+          let question of filteredQuestions.slice(
+            (currentPage - 1) * itemsPerPage,
+            currentPage * itemsPerPage
+          );
+          index as i
+        "
         [ngClass]="{
           'bg-primary-green-light/30': question.isComplete,
           'bg-white': !question.isComplete && i % 2 === 0,
@@ -42,10 +78,9 @@
             class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 custom-checkbox"
           />
         </td>
-
         <td class="px-2 py-1 text-gray-700 sm:px-4 sm:py-2 lg:px-6 lg:py-3">
           <a
-            (click)="navigateToQuestion(question.id)"
+            (click)="navigateToQuestion(question.type, question.id)"
             class="flex items-center w-full transition-colors duration-300 ease-in-out hover:text-primary-green-light"
           >
             <ng-container [ngSwitch]="question.style">
@@ -67,7 +102,6 @@
             </span>
           </a>
         </td>
-
         <td class="px-2 py-1 text-center sm:px-4 sm:py-2 lg:px-6 lg:py-3">
           <span
             class="px-2 py-1 text-xs text-white rounded-full bg-secondary-dark-light sm:text-sm lg:text-base"
@@ -75,14 +109,13 @@
             {{ question.topic }}
           </span>
         </td>
-
         <td class="px-2 py-1 text-center sm:px-4 sm:py-2 lg:px-6 lg:py-3">
           <span
             class="px-2 py-1 text-xs rounded-full sm:text-sm lg:text-base"
             [ngClass]="{
               'text-pink-600 bg-pink-200': question.type === 'Short Answer',
               'text-purple-600 bg-purple-200': question.type === 'Long Answer',
-              'text-teal-600 bg-teal-200': question.type === 'Coding Answer',
+              'text-teal-600 bg-teal-200': question.type === 'Coding',
               'text-secondary-dark-light': ![
                 'Multiple Choice',
                 'Short Answer',
@@ -96,4 +129,26 @@
       </tr>
     </tbody>
   </table>
+
+  <div class="flex items-center justify-center mt-4 space-x-4">
+    <button
+      (click)="prevPage()"
+      [disabled]="currentPage === 1"
+      class="p-2 text-white rounded-md bg-secondary-dark-mid disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <fa-icon [icon]="icons.faArrowLeft"></fa-icon>
+    </button>
+
+    <span class="font-semibold text-gray-700"
+      >Page {{ currentPage }} of {{ totalPages }}</span
+    >
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage * itemsPerPage >= questions.length"
+      class="p-2 text-white rounded-md bg-secondary-dark-mid disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <fa-icon [icon]="icons.faArrowRight"></fa-icon>
+    </button>
+  </div>
 </div>

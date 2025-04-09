@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../temp/course.service';
+import { CourseService } from '../firebase/course.service';
 import { Course } from 'src/app/models/course';
 import { Section } from 'src/app/models/section';
 import { Lesson } from 'src/app/models/lesson';

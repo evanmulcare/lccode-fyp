@@ -1,0 +1,36 @@
+<div class="max-w-screen-lg mx-auto">
+  <div class="flex justify-between p-5 mt-5 mb-4 bg-white rounded-lg">
+    <h1 class="flex items-center text-xl font-semibold">
+      <button
+        class="flex items-center px-2 py-1 mr-4 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
+        routerLink="/practice"
+      >
+        <fa-icon [icon]="icons.faChevronLeft" class="text-gray-600"></fa-icon>
+      </button>
+      {{ questionData?.question }}
+    </h1>
+
+    <div class="flex space-x-3">
+      <div
+        class="px-4 py-2 text-sm font-medium text-red-600 bg-red-200 rounded-full cursor-pointer"
+      >
+        {{ questionData?.topic }}
+      </div>
+
+      <div
+        class="px-4 py-2 text-sm font-medium text-orange-600 bg-orange-200 rounded-full cursor-pointer"
+      >
+        {{ questionData?.type }}
+      </div>
+    </div>
+  </div>
+  <div>
+    <app-markdown-viewer [source]="questionData?.source"></app-markdown-viewer>
+    <app-code-editor
+      *ngIf="questionData"
+      [placeholder]="questionData?.placeholder"
+      [basecodesource]="questionData.basecodesource"
+      [testcases]="questionData.testcases || []"
+    ></app-code-editor>
+  </div>
+</div>

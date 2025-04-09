@@ -1,39 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCheck, faCode, faPen } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faCode,
+  faPen,
+  faArrowLeft,
+  faArrowRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { ExamQuestion } from 'src/app/models/exam-question';
 import { AuthService } from 'src/app/shared/services/firebase/auth.service';
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
-  getDocs,
-  query,
-} from 'firebase/firestore';
-import { CompletedLesson, User } from 'src/app/models/user';
-
+import { CodeQuestion } from 'src/app/models/code-question';
+import { QuestionService } from 'src/app/shared/services/firebase/question.service';
 @Component({
   selector: 'app-practice-table',
   templateUrl: './practice-table.component.html',
   styleUrls: ['./practice-table.component.css'],
 })
 export class PracticeTableComponent {
-  questions: ExamQuestion[] = [];
+  questions: (ExamQuestion | CodeQuestion)[] = [];
+  paginatedQuestions: (ExamQuestion | CodeQuestion)[] = [];
+  currentPage = 1;
+  itemsPerPage = 10;
+
+  filteredQuestions: (ExamQuestion | CodeQuestion)[] = [];
+  topics: string[] = [];
+  types: string[] = [];
+  selectedTopic: string = '';
+  selectedType: string = '';
+  searchQuery: string = '';
 
   icons = {
     faCheck,
     faCode,
     faPen,
+    faArrowLeft,
+    faArrowRight,
   };
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private questionService: QuestionService
+  ) {}
 
   async ngOnInit() {
-    await this.loadExamQuestions();
+    this.questions = [];
+    const loadedExamQuestions =  await this.questionService.loadExamQuestions();;
+    const loadedCodeQuestions = await this.questionService.loadCodeQuestions();
+    this.questions.push(...loadedExamQuestions, ...loadedCodeQuestions);
+
     const user = this.auth.getCurrentUser();
 
     this.questions.forEach((question) => {
@@ -43,58 +58,74 @@ export class PracticeTableComponent {
         question.isComplete = true;
       }
     });
-  }
-  async getQuestionCompletionStatus(questionId: string): Promise<boolean> {
-    const user = this.auth.getCurrentUser();
-    return (
-      user?.completedLessons.some((lesson) => lesson.lessonId === questionId) ??
-      false
-    );
+
+    this.updatePaginatedQuestions();
+    this.extractFilterOptions();
+    this.applyFilters();
   }
 
-  async loadExamQuestions() {
-    try {
-      const db = getFirestore();
-      const examQuestionsCollection = collection(db, 'exam-questions');
-      const examQuery = query(examQuestionsCollection);
+  extractFilterOptions() {
+    const topicsSet = new Set<string>();
+    const typesSet = new Set<string>();
 
-      const querySnapshot = await getDocs(examQuery);
+    this.questions.forEach((q) => {
+      topicsSet.add(q.topic);
+      typesSet.add(q.type);
+    });
 
-      this.questions = [];
+    this.topics = Array.from(topicsSet);
+    this.types = Array.from(typesSet);
+  }
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+  applyFilters() {
+    this.filteredQuestions = this.questions.filter((question) => {
+      const matchesSearch = question.question
+        .toLowerCase()
+        .includes(this.searchQuery.toLowerCase());
+      const matchesTopic = this.selectedTopic
+        ? question.topic === this.selectedTopic
+        : true;
+      const matchesType = this.selectedType
+        ? question.type === this.selectedType
+        : true;
 
-        const questionData: ExamQuestion = {
-          id: doc.id,
-          question: data['question'] || 'test',
-          order: data['order'],
-          topic: data['topic'],
-          year: data['year'],
-          section: data['section'],
-          description: data['description'],
-          isComplete: false,
-          style: data['style'] || 'exam',
-          type: data['type'] || 'Short Answer',
-          level: data['level'] || 'N/A',
-          'IMG-URL': data['IMG-URL'],
-          'PDF-URL': data['PDF-URL'],
-          'MARKING-IMG-URL': data['MARKING-IMG-URL'],
-          'MARKING-PDF-URL': data['MARKING-PDF-URL'],
-        };
+      return matchesSearch && matchesTopic && matchesType;
+    });
+  }
 
-        this.questions.push(questionData);
-      });
-    } catch (error) {
-      console.error('Error loading exam questions:', error);
+  get totalPages(): number {
+    return Math.ceil(this.questions.length / this.itemsPerPage);
+  }
+
+  updatePaginatedQuestions() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedQuestions = this.questions.slice(start, end);
+  }
+
+  nextPage() {
+    if (this.currentPage * this.itemsPerPage < this.questions.length) {
+      this.currentPage++;
+      this.updatePaginatedQuestions();
     }
   }
 
-  navigateToQuestion(questionId: string) {
-    this.router.navigate(['/practice/questions', questionId]);
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedQuestions();
+    }
+  }
+  
+  navigateToQuestion(questionType: string, questionId: string) {
+    if (questionType == 'Coding') {
+      this.router.navigate(['/practice/questions/coding/', questionId]);
+    } else {
+      this.router.navigate(['/practice/questions', questionId]);
+    }
   }
 
-  toggleStatus(question: ExamQuestion) {
+  toggleStatus(question: ExamQuestion | CodeQuestion) {
     if (question.isComplete == true) {
       this.markAsNotComplete(question.id);
     } else {
@@ -104,75 +135,23 @@ export class PracticeTableComponent {
   }
 
   async markAsComplete(questionId: string) {
-    const user = this.auth.getCurrentUser();
-    if (!user) {
-      console.error('User or question ID missing');
-      return;
-    }
+    const completed = await this.questionService.markAsComplete(
+      questionId,
+      'question'
+    );
 
-    try {
-      const db = getFirestore();
-      const usersCollection = collection(db, 'users');
-      const userDocRef = doc(usersCollection, user.id);
-
-      const completedLesson: CompletedLesson = {
-        lessonId: questionId,
-        completedAt: Date.now(),
-        type: 'question',
-      };
-
-      await updateDoc(userDocRef, {
-        completedLessons: arrayUnion(completedLesson),
-      });
-
-      const updatedUser: User = {
-        ...user,
-        completedLessons: [...user.completedLessons, completedLesson],
-      };
-
-      this.auth.setCurrentUser(updatedUser);
-
+    if (completed) {
       const updatedQuestion = this.questions.find((q) => q.id === questionId);
       if (updatedQuestion) updatedQuestion.isComplete = true;
-    } catch (error) {
-      console.error('Error marking as complete:', error);
     }
   }
 
   async markAsNotComplete(questionId: string) {
-    const user = this.auth.getCurrentUser();
-    if (!user) {
-      console.error('User or question ID missing');
-      return;
-    }
+    const success = await this.questionService.markAsNotComplete(questionId);
 
-    try {
-      const db = getFirestore();
-      const usersCollection = collection(db, 'users');
-      const userDocRef = doc(usersCollection, user.id);
-
-      const lessonToRemove = user.completedLessons.find(
-        (lesson) => lesson.lessonId === questionId
-      );
-      if (!lessonToRemove) return;
-
-      await updateDoc(userDocRef, {
-        completedLessons: arrayRemove(lessonToRemove),
-      });
-
-      const updatedUser = {
-        ...user,
-        completedLessons: user.completedLessons.filter(
-          (lesson) => lesson.lessonId !== questionId
-        ),
-      };
-
-      this.auth.setCurrentUser(updatedUser);
-
+    if (success) {
       const updatedQuestion = this.questions.find((q) => q.id === questionId);
       if (updatedQuestion) updatedQuestion.isComplete = false;
-    } catch (error) {
-      console.error('Error marking as not complete:', error);
     }
   }
 }

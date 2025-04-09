@@ -10,7 +10,7 @@ import { forkJoin } from 'rxjs';
 import { Course } from 'src/app/models/course';
 import { Lesson } from 'src/app/models/lesson';
 import { Section } from 'src/app/models/section';
-import { CourseService } from 'src/app/shared/services/temp/course.service';
+import { CourseService } from 'src/app/shared/services/firebase/course.service';
 
 @Component({
   selector: 'app-course-single-view',
@@ -45,7 +45,6 @@ export class CourseSingleViewComponent implements OnInit {
       this.sections = this.course.sections;
       this.loadLessonsForSections(courseId, this.course.sections);
 
-      // Fetch prerequisite courses
       this.courseService
         .getPrerequisiteCourses(courseId)
         .subscribe((prerequisites) => {

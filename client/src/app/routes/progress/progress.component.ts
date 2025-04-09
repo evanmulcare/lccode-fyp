@@ -1,28 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Course } from 'src/app/models/course';
 import { CompletedLesson, User } from 'src/app/models/user';
 import { AuthService } from 'src/app/shared/services/firebase/auth.service';
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-} from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { Question } from 'src/app/models/question';
 import { Lesson } from 'src/app/models/lesson';
+import { SimplifiedCourse } from 'src/app/models/simplified-course';
+
 import {
   faPlay,
   faCheck,
   faCode,
   faPen,
 } from '@fortawesome/free-solid-svg-icons';
-
-interface SimplifiedCourse {
-  id: string;
-  title: string;
-  category: string;
-}
 
 @Component({
   selector: 'app-progress',
@@ -81,13 +70,12 @@ export class ProgressComponent implements OnInit {
         this.recentQuestions = user.completedLessons
           .filter((lesson) => lesson.type === 'question')
           .sort((a, b) => b.completedAt - a.completedAt)
-          .slice(0, 5); // Get the most recent 5 questions
+          .slice(0, 5);
 
         this.mostRecentLesson = this.findMostRecentLesson(
           user.completedLessons
         );
 
-        // Fetch the most recent course and questions
         if (this.mostRecentLesson) {
           this.GetMostRecentCourse(this.mostRecentLesson);
         }
@@ -96,7 +84,6 @@ export class ProgressComponent implements OnInit {
     });
   }
 
-  // Method to find the most recent lesson of type 'lesson'
   findMostRecentLesson(
     completedLessons: CompletedLesson[]
   ): CompletedLesson | null {
@@ -111,12 +98,10 @@ export class ProgressComponent implements OnInit {
     return lessonLessons.sort((a, b) => b.completedAt - a.completedAt)[0];
   }
 
-  // Get the most recent course by fetching the lesson and course document
   async GetMostRecentCourse(mostRecentLesson: CompletedLesson): Promise<void> {
     try {
       const db = getFirestore();
 
-      // Fetch the lesson document
       const lessonRef = doc(db, 'lessons', mostRecentLesson.lessonId);
       const lessonDoc = await getDoc(lessonRef);
 
@@ -183,14 +168,6 @@ export class ProgressComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error fetching recent question details:', error);
-    }
-  }
-
-  navigateToMostRecentCourseLesson() {
-    if (this.mostRecentCourse && this.mostRecentLesson) {
-      console.log(
-        `Navigating to course: ${this.mostRecentCourse.id}, lesson: ${this.mostRecentLesson.lessonId}`
-      );
     }
   }
 

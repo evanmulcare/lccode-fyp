@@ -11,16 +11,8 @@ import {
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
 import { PDFDocument } from 'pdf-lib';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-  orderBy,
-} from 'firebase/firestore';
 import { ExamData } from 'src/app/models/examData';
-import { question1Data } from 'src/assets/exams/questions/2024/section_a/q1/question1-data';
+import { QuestionService } from 'src/app/shared/services/firebase/question.service';
 
 @Component({
   selector: 'app-exam-worksheet-builder',
@@ -64,64 +56,33 @@ export class ExamWorksheetBuilderComponent {
   currentSelection = 'higher';
   currentYear = 2024;
 
+  constructor(
+      private questionService: QuestionService
+  ) {}
+
   ngOnInit(): void {
     this.loadExamQuestions();
   }
 
   async loadExamQuestions() {
-    try {
-      const db = getFirestore();
-      const examQuestionsCollection = collection(db, 'exam-questions');
-      const examQuery = query(
-        examQuestionsCollection,
-        where('year', '==', this.currentYear),
-        where('level', '==', this.currentSelection),
-        orderBy('order')
-      );
-
-      const querySnapshot = await getDocs(examQuery);
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        console.log('Fetched exam question:', data);
-
-        const examData = {
-          year: data['year'],
-          questions: [
-            {
-              id: doc.id,
-              question: data['question'] || '',
-              order: data['order'],
-              topic: data['topic'],
-              year: data['year'],
-              section: data['section'],
-              description: data['description'],
-              isComplete: data['isComplete'] || false,
-              style: data['style'] || 'exam',
-              type: data['type'] || 'Short Answer',
-              level: data['level'] || 'N/A',
-              'IMG-URL': data['IMG-URL'],
-              'PDF-URL': data['PDF-URL'],
-              'MARKING-IMG-URL': data['MARKING-IMG-URL'],
-              'MARKING-PDF-URL': data['MARKING-PDF-URL'],
-            },
-          ],
-        };
-
-        const existingExamIndex = this.higherExams.findIndex(
-          (exam) => exam.year === data['year']
-        );
-        if (existingExamIndex !== -1) {
-          this.higherExams[existingExamIndex].questions.push(
-            examData.questions[0]
-          );
-        } else {
-          this.higherExams.push(examData);
-        }
+      const rawQuestions = await this.questionService.loadExamQuestions({
+        year: this.currentYear,
+        level: this.currentSelection,
+        orderByField: 'order',
       });
-    } catch (error) {
-      console.error('Error loading exam questions:', error);
-    }
+    
+      rawQuestions.forEach((q) => {
+        const existingExamIndex = this.higherExams.findIndex(
+          (exam) => exam.year === q.year
+        );
+    
+        if (existingExamIndex !== -1) {
+          this.higherExams[existingExamIndex].questions.push(q);
+        } else {
+          this.higherExams.push({ year: q.year, questions: [q] });
+        }
+
+      });
   }
 
   toggleMenu() {
@@ -197,7 +158,6 @@ export class ExamWorksheetBuilderComponent {
   addAllMarkingSchemes() {
     const addedQuestions = this.pages.filter((page) => page.type === 'answer');
     addedQuestions.forEach((page) => {
-      console.log('querst', page);
       const marking = {
         id: this.generateId(),
         type: 'markingScheme',

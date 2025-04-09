@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Course } from 'src/app/models/course';
-import { CourseService } from 'src/app/shared/services/temp/course.service';
+import { CourseService } from 'src/app/shared/services/firebase/course.service';
 
 @Component({
   selector: 'app-courses',

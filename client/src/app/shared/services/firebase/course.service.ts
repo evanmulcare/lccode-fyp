@@ -10,7 +10,7 @@ import {
   collection,
   getDocs,
 } from 'firebase/firestore';
-import { AuthService } from '../firebase/auth.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -86,7 +86,8 @@ export class CourseService {
 
       this.lessons = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        return {
+
+        const lesson: Lesson = {
           id: doc.id,
           courseId: data['courseId'] || '',
           type: data['type'] || 'note',
@@ -95,7 +96,20 @@ export class CourseService {
           content: data['content'] || '',
           order: data['order'],
           isComplete: false,
-        } as Lesson;
+        };
+
+        if (data['placeholder']) {
+          lesson.placeholder = data['placeholder'];
+        }
+
+        if (data['testcases'] && Array.isArray(data['testcases'])) {
+          lesson.testcases = data['testcases'].map((testCase: any) => ({
+            input: testCase.input || '',
+            expected_output: testCase.expected_output || '',
+          }));
+        }
+
+        return lesson;
       });
 
       const user = this.auth.getCurrentUser();

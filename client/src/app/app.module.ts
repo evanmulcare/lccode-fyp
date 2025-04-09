@@ -7,14 +7,9 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-
 import { environment } from 'environments/environment';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './routes/home/home.component';
-import { ExamComponent } from './routes/exam/exam.component';
-import { ExamPapersTabComponent } from './routes/exam/exam-tabs/exam-papers-tab/exam-papers-tab.component';
-import { OverviewTabComponent } from './routes/exam/exam-tabs/overview-tab/overview-tab.component';
-import { WorksheetTabComponent } from './routes/exam/exam-tabs/worksheet-tab/worksheet-tab.component';
 import { CoursesComponent } from './routes/courses/courses.component';
 import { CourseCardComponent } from './routes/courses/course-card/course-card.component';
 import { NavbarComponent } from './shared/ui/navbar/navbar.component';
@@ -26,7 +21,6 @@ import { CourseSidenavComponent } from './routes/sub-routes/course-routes/course
 import { CourseTitleCardComponent } from './routes/sub-routes/course-routes/course-container/course-title-card/course-title-card.component';
 import { CourseTopnavComponent } from './routes/sub-routes/course-routes/course-container/course-topnav/course-topnav.component';
 import { NotesViewerComponent } from './shared/ui/notes-viewer/notes-viewer.component';
-import { ExamQuestionViewerComponent } from './shared/ui/exam-question-viewer/exam-question-viewer.component';
 import { CodeEditorComponent } from './shared/ui/code-editor/code-editor.component';
 import { FormsModule } from '@angular/forms';
 import { VideoPlayerComponent } from './shared/ui/video-player/video-player.component';
@@ -45,17 +39,12 @@ import { PracticeSingleViewComponent } from './routes/sub-routes/exam-routes/pra
 import { QuestionCardComponent } from './routes/sub-routes/exam-routes/practice-single-view/question-card/question-card.component';
 import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-material-view/exam-material-view.component';
 import { ProgressComponent } from './routes/progress/progress.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { CodePracticeSingleViewComponent } from './routes/sub-routes/exam-routes/code-practice-single-view/code-practice-single-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ExamComponent,
-    ExamPapersTabComponent,
-    OverviewTabComponent,
-    WorksheetTabComponent,
     CoursesComponent,
     CourseCardComponent,
     NavbarComponent,
@@ -67,7 +56,6 @@ import { EffectsModule } from '@ngrx/effects';
     CourseTitleCardComponent,
     CourseTopnavComponent,
     NotesViewerComponent,
-    ExamQuestionViewerComponent,
     CodeEditorComponent,
     VideoPlayerComponent,
     SafePipe,
@@ -84,10 +72,10 @@ import { EffectsModule } from '@ngrx/effects';
     QuestionCardComponent,
     ExamMaterialViewComponent,
     ProgressComponent,
+    CodePracticeSingleViewComponent,
   ],
   imports: [
     BrowserModule,
-
     AppRoutingModule,
     FontAwesomeModule,
     HttpClientModule,

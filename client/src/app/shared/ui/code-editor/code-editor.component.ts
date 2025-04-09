@@ -1,4 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { CodeExecutionService } from '../../services/firebase/code-execution.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-code-editor',
@@ -6,17 +9,27 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./code-editor.component.css'],
 })
 export class CodeEditorComponent {
-  @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
+  @Input() placeholder: string | undefined;
+  @Input() basecodesource: string | undefined;
+  @Input() testcases: { input: string; expected_output: string }[] = [];
+  results: {
+    input: string;
+    output: string;
+    expected: string;
+    passed: boolean;
+  }[] = [];
 
-  selectedLanguage: string = 'JavaScript';
+  @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
+  selectedLanguage: string = 'Python';
   dropdownOpen: boolean = false;
   editorInstance: any;
-  private defaultCode: string =
-    'function x() {\nconsole.log("Hello world!");\n}';
+  isLoading = false;
+
+  private defaultCode: string = '';
 
   private defaultEditorOptions = {
     theme: 'vs-dark',
-    language: 'javascript',
+    language: 'python',
     fontSize: 18,
     automaticLayout: true,
     minimap: {
@@ -38,13 +51,32 @@ export class CodeEditorComponent {
 
   editorOptions = { ...this.defaultEditorOptions };
   code: string = this.defaultCode;
+  testResults: {
+    input: string;
+    expectedOutput: string;
+    userOutput: string;
+    passed: boolean;
+  }[] = [];
 
-  constructor() {}
+  constructor(
+    private codeExecutionService: CodeExecutionService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {}
 
   ngAfterViewInit() {
+    console.log('LOGGED', this.basecodesource, this.testcases);
+
     this.updateEditorHeight();
+    this.loadDefaultCode();
+  }
+
+  updateCodeFromPlaceholder() {
+    if (this.placeholder) {
+      this.defaultCode = this.placeholder;
+      this.code = this.defaultCode;
+    }
   }
 
   onEditorInit(editor: any) {
@@ -111,5 +143,58 @@ export class CodeEditorComponent {
       this.editorInstance.updateOptions(this.defaultEditorOptions);
       this.updateEditorHeight();
     }
+  }
+
+  runCode() {
+    this.isLoading = true;
+    this.results = [];
+
+    this.codeExecutionService.runCode(this.code, this.testcases).subscribe(
+      (response: any) => {
+        console.log('Results from Backend:', response);
+
+        this.testcases.forEach((testcase, index) => {
+          const result = response[index];
+
+          this.results.push({
+            input: testcase.input,
+            output: result.userOutput,
+            expected: testcase.expected_output,
+            passed: result.passed,
+          });
+        });
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error in running code:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  loadDefaultCode() {
+    console.log('CALLED DEFAULT', this.basecodesource);
+    const markdownURL = this.basecodesource;
+    if (markdownURL) {
+      this.fetchDefaultCodeFromUrl(markdownURL).subscribe(
+        (code: string) => {
+          console.log('FETCHED', code);
+          this.defaultCode = code;
+          this.code = this.defaultCode;
+        },
+        (error) => {
+          console.error('Error fetching default code:', error);
+        }
+      );
+    }
+  }
+
+  fetchDefaultCodeFromUrl(url: string): Observable<string> {
+    return this.http.get(url, { responseType: 'text' });
+  }
+
+  get allPassed(): boolean {
+    return this.results.every((result) => result.passed);
   }
 }

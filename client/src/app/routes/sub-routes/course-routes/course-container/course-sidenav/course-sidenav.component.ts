@@ -9,7 +9,7 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
 import { CourseContainerService } from 'src/app/shared/services/state/course-container.service';
-import { CourseService } from 'src/app/shared/services/temp/course.service';
+import { CourseService } from 'src/app/shared/services/firebase/course.service';
 
 @Component({
   selector: 'app-course-sidenav',

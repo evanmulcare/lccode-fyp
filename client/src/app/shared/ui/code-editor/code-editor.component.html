@@ -12,7 +12,7 @@
         class="absolute left-0 z-10 w-40 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg"
       >
         <button
-          *ngFor="let lang of ['JavaScript', 'Python']"
+          *ngFor="let lang of ['Python']"
           (click)="selectLanguage(lang)"
           class="block w-full px-4 py-2 text-left transition hover:bg-gray-100 focus:outline-none"
         >
@@ -22,11 +22,6 @@
     </div>
 
     <div class="flex space-x-2">
-      <button
-        class="px-4 py-2 text-white transition rounded-lg bg-secondary-dark-mid hover:bg-secondary-dark-darkestfocus:outline-none focus:ring-2 focus:ring-secondary-dark-mid focus:ring-opacity-50"
-      >
-        Solution
-      </button>
       <button
         (click)="resetEditor()"
         class="px-4 py-2 text-white transition rounded-lg bg-secondary-dark-mid hover:bg-secondary-dark-darkest focus:outline-none focus:ring-2 focus:ring-secondary-dark-mid focus:ring-opacity-50"
@@ -48,14 +43,83 @@
 
   <div class="flex justify-end gap-4 mt-6">
     <button
-      class="px-6 py-2 transition border-2 rounded-lg text-secondary-dark-mid border-secondary-dark-light focus:outline-none focus:ring-2 focus:ring-secondary-dark-light focus:ring-opacity-50"
+      class="px-4 py-2 text-white transition rounded-lg bg-secondary-dark-mid hover:bg-secondary-dark-darkestfocus:outline-none focus:ring-2 focus:ring-secondary-dark-mid focus:ring-opacity-50"
     >
-      Run
+      Solution
     </button>
     <button
-      class="px-6 py-2 text-white transition rounded-lg bg-primary-green hover:bg-primary-green-light focus:outline-none focus:ring-2 focus:ring-primary-green focus:ring-opacity-50"
+      class="px-6 py-2 text-white transition rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
+      [ngClass]="{
+        'bg-primary-green hover:bg-primary-green-light focus:ring-primary-green':
+          !isLoading,
+        'bg-gray-400 cursor-not-allowed': isLoading
+      }"
+      [disabled]="isLoading"
+      (click)="runCode()"
     >
-      Submit
+      <ng-container *ngIf="isLoading; else defaultText">
+        <span class="loader"></span> Running...
+      </ng-container>
+      <ng-template #defaultText>Submit</ng-template>
     </button>
+  </div>
+
+  <div class="mt-6">
+    <div
+      *ngIf="results.length === 0"
+      class="p-4 mt-4 border rounded-lg shadow-md"
+    >
+      <div>
+        <strong>No Results Yet. Submit your code to test your answer.</strong>
+      </div>
+    </div>
+
+    <div *ngIf="results.length !== 0">
+      <h3 class="text-lg font-semibold">
+        Result:
+        <span
+          [ngClass]="{
+            'text-green-600': allPassed,
+            'text-red-600': !allPassed
+          }"
+        >
+          {{ allPassed ? "PASSED" : "FAILED" }}
+        </span>
+      </h3>
+
+      <div
+        *ngFor="let result of results"
+        class="p-4 mt-4 bg-white border rounded-lg shadow-md"
+        [ngClass]="{
+          'border-green-400': result.passed,
+          'border-red-400': !result.passed
+        }"
+      >
+        <div class="mt-2">
+          <span
+            class="font-semibold"
+            [ngClass]="{
+              'text-green-600': result.passed,
+              'text-red-600': !result.passed
+            }"
+          >
+            {{ result.passed ? "✔ Passed" : "✖ Failed" }}
+          </span>
+        </div>
+
+        <div *ngIf="result.input">
+          <strong>Input:</strong>
+          <pre class="p-2 bg-gray-200 rounded">{{ result.input }}</pre>
+        </div>
+        <div>
+          <strong>Output:</strong>
+          <pre class="p-2 bg-gray-200 rounded">{{ result.output }}</pre>
+        </div>
+        <div>
+          <strong>Expected:</strong>
+          <pre class="p-2 bg-gray-200 rounded">{{ result.expected }}</pre>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

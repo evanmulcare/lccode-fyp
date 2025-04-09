@@ -26,13 +26,11 @@
             <app-markdown-viewer
               [source]="(lesson$ | async)?.src"
             ></app-markdown-viewer>
-            <app-code-editor></app-code-editor>
+            <app-code-editor
+              [placeholder]="(lesson$ | async)?.placeholder"
+              [testcases]="(lesson$ | async)?.testcases || []"
+            ></app-code-editor>
           </div>
-          <app-exam-question-viewer
-            *ngSwitchCase="'exam'"
-            [lesson]="lesson$ | async"
-          >
-          </app-exam-question-viewer>
         </ng-container>
       </main>
     </div>

@@ -3,16 +3,8 @@ import { Lesson } from 'src/app/models/lesson';
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { CourseContainerService } from 'src/app/shared/services/state/course-container.service';
 import { AuthService } from 'src/app/shared/services/firebase/auth.service';
-import {
-  getFirestore,
-  doc,
-  collection,
-  updateDoc,
-  arrayRemove,
-  arrayUnion,
-} from 'firebase/firestore';
-import { CourseService } from 'src/app/shared/services/temp/course.service';
-import { CompletedLesson } from 'src/app/models/user';
+import { CourseService } from 'src/app/shared/services/firebase/course.service';
+import { QuestionService } from 'src/app/shared/services/firebase/question.service';
 
 @Component({
   selector: 'app-course-title-card',
@@ -33,8 +25,8 @@ export class CourseTitleCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private courseContainerService: CourseContainerService,
-    private auth: AuthService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private questionService: QuestionService
   ) {
     this.lesson$ = this.courseContainerService.lesson$;
     this.allLessons$ = this.courseContainerService.allLessons$;
@@ -85,77 +77,27 @@ export class CourseTitleCardComponent implements OnInit, OnDestroy {
   }
 
   async markAsComplete(lessonId: string) {
-    const user = this.auth.getCurrentUser();
-    if (!user) {
-      console.error('User not found');
-      return;
-    }
-    try {
-      const db = getFirestore();
-      const usersCollection = collection(db, 'users');
-      const userDocRef = doc(usersCollection, user.id);
+    const completed = await this.questionService.markAsComplete(
+      lessonId,
+      'lesson'
+    );
 
-      const completedLesson: CompletedLesson = {
-        lessonId: lessonId,
-        completedAt: Date.now(),
-        type: 'lesson',
-      };
-
-      await updateDoc(userDocRef, {
-        completedLessons: arrayUnion(completedLesson),
-      });
-
-      const updatedUser = {
-        ...user,
-        completedLessons: [...user.completedLessons, completedLesson],
-      };
-      this.auth.setCurrentUser(updatedUser);
-
+    if (completed) {
       const updatedLesson = this.allLessons.find(
         (lesson) => lesson.id === lessonId
       );
       if (updatedLesson) updatedLesson.isComplete = true;
-    } catch (error) {
-      console.error('Error marking lesson as complete:', error);
     }
   }
 
   async markAsNotComplete(lessonId: string) {
-    const user = this.auth.getCurrentUser();
-    if (!user) {
-      console.error('User not found');
-      return;
-    }
+    const success = await this.questionService.markAsNotComplete(lessonId);
 
-    try {
-      const db = getFirestore();
-      const usersCollection = collection(db, 'users');
-      const userDocRef = doc(usersCollection, user.id);
-
-      const lessonToRemove = user.completedLessons.find(
-        (lesson) => lesson.lessonId === lessonId
-      );
-      if (!lessonToRemove) return;
-
-      await updateDoc(userDocRef, {
-        completedLessons: arrayRemove(lessonToRemove),
-      });
-
-      const updatedUser = {
-        ...user,
-        completedLessons: user.completedLessons.filter(
-          (lesson) => lesson.lessonId !== lessonId
-        ),
-      };
-
-      this.auth.setCurrentUser(updatedUser);
-
+    if (success) {
       const updatedLesson = this.allLessons.find(
         (lesson) => lesson.id === lessonId
       );
       if (updatedLesson) updatedLesson.isComplete = false;
-    } catch (error) {
-      console.error('Error marking lesson as not complete:', error);
     }
   }
 

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './routes/home/home.component';
-import { ExamComponent } from './routes/exam/exam.component';
 import { CoursesComponent } from './routes/courses/courses.component';
 import { CourseSingleViewComponent } from './routes/sub-routes/course-routes/course-single-view/course-single-view.component';
 import { CourseContainerComponent } from './routes/sub-routes/course-routes/course-container/course-container.component';
@@ -13,12 +12,12 @@ import { PracticeComponent } from './routes/practice/practice.component';
 import { PracticeSingleViewComponent } from './routes/sub-routes/exam-routes/practice-single-view/practice-single-view.component';
 import { ExamMaterialViewComponent } from './routes/sub-routes/exam-routes/exam-material-view/exam-material-view.component';
 import { ProgressComponent } from './routes/progress/progress.component';
+import { CodePracticeSingleViewComponent } from './routes/sub-routes/exam-routes/code-practice-single-view/code-practice-single-view.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'exam', component: ExamComponent, canActivate: [AuthGuard] },
   {
     path: 'exam/papers/:year',
     component: ExamSingleViewComponent,
@@ -33,6 +32,11 @@ const routes: Routes = [
   {
     path: 'practice/questions/:question',
     component: PracticeSingleViewComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'practice/questions/coding/:question',
+    component: CodePracticeSingleViewComponent,
     canActivate: [AuthGuard],
   },
   {
