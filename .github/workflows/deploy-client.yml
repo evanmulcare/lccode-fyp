@@ -26,6 +26,5 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           channelId: live
           projectId: lccode-fyp
-          entryPoint: client/dist/client
           expires: 7d
           firebaseToolsVersion: latest
