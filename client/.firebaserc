@@ -1,12 +1,5 @@
 {
   "projects": {
     "default": "lccode-fyp"
-  },
-  "targets": {},
-  "etags": {
-    "lccode-fyp": {
-      "extensionInstances": {}
-    }
-  },
-  "dataconnectEmulatorConfig": {}
+  }
 }
