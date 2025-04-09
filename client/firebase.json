@@ -3,7 +3,7 @@
     "source": "backend/functions"
   },
   "hosting": {
-    "public": "/dist/client/",
+    "public": "client/dist/client",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
