@@ -6,7 +6,7 @@ import * as cors from "cors";
 admin.initializeApp();
 const corsHandler = cors({ origin: true });
 
-const JUDGE0_BASE_URL = "http://35.193.57.144:2358";
+const JUDGE0_BASE_URL = "http://104.197.40.161:2358";
 
 interface TestCase {
   input: string;

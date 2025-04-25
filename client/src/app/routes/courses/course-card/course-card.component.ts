@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { faPlay, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { Course } from 'src/app/models/course';
 
 @Component({
@@ -10,9 +10,4 @@ import { Course } from 'src/app/models/course';
 export class CourseCardComponent {
   @Input() course?: Course;
   faPlay = faPlay;
-  faDownload = faDownload;
-
-  onDownload() {
-    alert('Download not implemented yet.');
-  }
 }

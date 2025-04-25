@@ -1,6 +1,7 @@
 {
   "functions": {
-    "source": "backend/functions"
+    "source": "functions/functions",
+    "timeoutSeconds": 300
   },
   "hosting": {
     "public": "dist/client/",

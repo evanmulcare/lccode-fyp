@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WorksheetQuestionListComponent } from './worksheet-question-list.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; 
 
 describe('WorksheetQuestionListComponent', () => {
   let component: WorksheetQuestionListComponent;
@@ -8,8 +8,10 @@ describe('WorksheetQuestionListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WorksheetQuestionListComponent]
+      declarations: [WorksheetQuestionListComponent],
+      imports: [FontAwesomeModule],
     });
+
     fixture = TestBed.createComponent(WorksheetQuestionListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -81,7 +81,6 @@ export class ExamWorksheetBuilderComponent {
         } else {
           this.higherExams.push({ year: q.year, questions: [q] });
         }
-
       });
   }
 
@@ -102,6 +101,7 @@ export class ExamWorksheetBuilderComponent {
       IMG_URL: 'assets/exams/questions/page_templates/blank_page_thumbnail.png',
       PDF_URL: 'assets/exams/questions/page_templates/blank_page.pdf',
     };
+
     this.pages.push(page);
   }
 
@@ -127,6 +127,7 @@ export class ExamWorksheetBuilderComponent {
       MARKING_IMG_URL: question['MARKING-IMG-URL'],
       MARKING_PDF_URL: question['MARKING-PDF-URL'],
     };
+
     this.pages.push(page);
   }
 
@@ -157,6 +158,7 @@ export class ExamWorksheetBuilderComponent {
 
   addAllMarkingSchemes() {
     const addedQuestions = this.pages.filter((page) => page.type === 'answer');
+
     addedQuestions.forEach((page) => {
       const marking = {
         id: this.generateId(),
@@ -167,6 +169,7 @@ export class ExamWorksheetBuilderComponent {
         IMG_URL: page.MARKING_IMG_URL,
         PDF_URL: page.MARKING_PDF_URL,
       };
+
       this.pages.push(marking);
     });
   }
@@ -180,9 +183,11 @@ export class ExamWorksheetBuilderComponent {
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
+    
     for (let i = 0; i < 4; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+
     return result;
   }
 

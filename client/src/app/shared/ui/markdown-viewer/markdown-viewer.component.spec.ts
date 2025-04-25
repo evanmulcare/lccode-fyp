@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MarkdownViewerComponent } from './markdown-viewer.component';
+import { MarkdownModule, MarkdownService } from 'ngx-markdown';
 
 describe('MarkdownViewerComponent', () => {
   let component: MarkdownViewerComponent;
@@ -8,7 +9,9 @@ describe('MarkdownViewerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MarkdownViewerComponent]
+      declarations: [MarkdownViewerComponent],
+      imports: [MarkdownModule],
+      providers: [MarkdownService],
     });
     fixture = TestBed.createComponent(MarkdownViewerComponent);
     component = fixture.componentInstance;

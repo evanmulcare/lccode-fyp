@@ -9,7 +9,6 @@ import { CourseService } from 'src/app/shared/services/firebase/course.service';
 })
 export class CoursesComponent {
   courses: Course[] = [];
-
   constructor(private courseService: CourseService) {}
 
   async ngOnInit() {

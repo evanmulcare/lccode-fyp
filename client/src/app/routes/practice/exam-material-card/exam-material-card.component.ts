@@ -11,7 +11,6 @@ export class ExamMaterialCardComponent {
   @Input() image1!: string;
   @Input() image2!: string;
   @Input() downloadLink!: string;
-
   icons = { faDownload };
 
   downloadMaterial() {
