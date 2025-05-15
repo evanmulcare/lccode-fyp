@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  openDocumentation() {
-    alert('No Documentation Added');
+  openDocumentation(link: string): void {
+    window.open(link, '_blank');
   }
 }
