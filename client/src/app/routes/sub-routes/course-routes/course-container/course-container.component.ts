@@ -5,7 +5,6 @@ import { CourseContainerService } from 'src/app/shared/services/state/course-con
 @Component({
   selector: 'app-course-container',
   templateUrl: './course-container.component.html',
-  styleUrls: ['./course-container.component.css'],
 })
 export class CourseContainerComponent {
   course$ = this.courseContainerService.course$;

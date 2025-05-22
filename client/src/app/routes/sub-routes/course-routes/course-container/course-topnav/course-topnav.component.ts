@@ -6,7 +6,6 @@ import { faHouse, faBars } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-course-topnav',
   templateUrl: './course-topnav.component.html',
-  styleUrls: ['./course-topnav.component.css'],
 })
 export class CourseTopnavComponent {
   isSidebarOpen$: Observable<boolean>;

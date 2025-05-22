@@ -3,7 +3,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-worksheet-question-list',
   templateUrl: './worksheet-question-list.component.html',
-  styleUrls: ['./worksheet-question-list.component.css'],
 })
 export class WorksheetQuestionListComponent {
   @Input() exam: any;

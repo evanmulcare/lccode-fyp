@@ -7,7 +7,6 @@ import { QuestionService } from 'src/app/shared/services/firebase/question.servi
 @Component({
   selector: 'app-practice-single-view',
   templateUrl: './practice-single-view.component.html',
-  styleUrls: ['./practice-single-view.component.css'],
 })
 export class PracticeSingleViewComponent {
   icons = {
@@ -39,7 +38,9 @@ export class PracticeSingleViewComponent {
 
   async ngOnInit() {
     await this.loadExamQuestion();
-    this.isQuestionCompleted = await this.questionService.isQuestionCompleted(this.questionId);
+    this.isQuestionCompleted = await this.questionService.isQuestionCompleted(
+      this.questionId
+    );
   }
 
   async loadExamQuestion() {

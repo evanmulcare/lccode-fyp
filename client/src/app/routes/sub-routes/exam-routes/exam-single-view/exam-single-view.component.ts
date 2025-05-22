@@ -10,7 +10,6 @@ import {
 @Component({
   selector: 'app-exam-single-view',
   templateUrl: './exam-single-view.component.html',
-  styleUrls: ['./exam-single-view.component.css'],
 })
 export class ExamSingleViewComponent {
   icons = {

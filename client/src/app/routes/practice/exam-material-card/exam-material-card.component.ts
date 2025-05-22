@@ -4,7 +4,6 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-exam-material-card',
   templateUrl: './exam-material-card.component.html',
-  styleUrls: ['./exam-material-card.component.css'],
 })
 export class ExamMaterialCardComponent {
   @Input() year!: string;

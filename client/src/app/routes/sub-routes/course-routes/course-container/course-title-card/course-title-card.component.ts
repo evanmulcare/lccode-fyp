@@ -2,14 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Lesson } from 'src/app/models/lesson';
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { CourseContainerService } from 'src/app/shared/services/state/course-container.service';
-import { AuthService } from 'src/app/shared/services/firebase/auth.service';
 import { CourseService } from 'src/app/shared/services/firebase/course.service';
 import { QuestionService } from 'src/app/shared/services/firebase/question.service';
 
 @Component({
   selector: 'app-course-title-card',
   templateUrl: './course-title-card.component.html',
-  styleUrls: ['./course-title-card.component.css'],
 })
 export class CourseTitleCardComponent implements OnInit, OnDestroy {
   lesson$: Observable<Lesson | null>;

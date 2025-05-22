@@ -28,7 +28,7 @@
     <div class="flex items-center justify-between mt-4 space-x-4">
       <div class="text-center">
         <div class="mb-1 text-4xl font-bold text-secondary-dark-mid">
-          {{ course?.progress }}%
+          {{ course?.progress | number : "1.0-0" }}%
         </div>
         <div class="text-sm text-gray-600">
           {{

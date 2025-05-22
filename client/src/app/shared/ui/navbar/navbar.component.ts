@@ -13,7 +13,6 @@ import { AuthService } from '../../services/firebase/auth.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
   icons = {

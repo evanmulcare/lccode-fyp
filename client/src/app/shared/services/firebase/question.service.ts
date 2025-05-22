@@ -83,13 +83,13 @@ export class QuestionService {
       const db = getFirestore();
       const codeQuestionsCollection = collection(db, 'code-questions');
       const codeQuery = query(codeQuestionsCollection);
-  
+
       const querySnapshot = await getDocs(codeQuery);
       const questions: CodeQuestion[] = [];
-  
+
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-  
+
         const questionData: CodeQuestion = {
           id: doc.id,
           question: data['question'] || 'test',
@@ -101,21 +101,21 @@ export class QuestionService {
           source: data['source'] || '',
           basecodesource: data['basecode-source'],
         };
-  
+
         if (data['placeholder']) {
           questionData.placeholder = data['placeholder'];
         }
-  
+
         if (data['testcases'] && Array.isArray(data['testcases'])) {
           questionData.testcases = data['testcases'].map((testCase: any) => ({
             input: testCase.input || '',
             expected_output: testCase.expected_output || '',
           }));
         }
-  
+
         questions.push(questionData);
       });
-  
+
       return questions;
     } catch (error) {
       console.error('Error loading code questions:', error);
@@ -164,14 +164,14 @@ export class QuestionService {
       const db = getFirestore();
       const docRef = doc(db, 'code-questions', questionId);
       const docSnap = await getDoc(docRef);
-  
+
       if (!docSnap.exists()) {
         console.error('No such document!');
         return null;
       }
-  
+
       const data = docSnap.data();
-  
+
       const question: CodeQuestion = {
         id: docSnap.id,
         question: data['question'] || 'test',
@@ -183,25 +183,25 @@ export class QuestionService {
         source: data['source'] || '',
         basecodesource: data['basecode-source'],
       };
-  
+
       if (data['placeholder']) {
         question.placeholder = data['placeholder'];
       }
-  
+
       if (Array.isArray(data['testcases'])) {
         question.testcases = data['testcases'].map((testCase: any) => ({
           input: testCase.input || '',
           expected_output: testCase.expected_output || '',
         }));
       }
-  
+
       return question;
     } catch (error) {
       console.error('Error loading code question:', error);
       return null;
     }
   }
-  
+
   async markAsComplete(
     lessonId: string,
     type: 'lesson' | 'question'
@@ -278,9 +278,8 @@ export class QuestionService {
   async isQuestionCompleted(questionId: string): Promise<boolean> {
     const user = this.auth.getCurrentUser();
     return (
-      user?.completedLessons.some(
-        (lesson) => lesson.lessonId === questionId
-      ) ?? false
+      user?.completedLessons.some((lesson) => lesson.lessonId === questionId) ??
+      false
     );
   }
 }

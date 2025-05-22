@@ -5,7 +5,6 @@ import { NavbarService } from './shared/services/state/navbar.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   showNavbar$ = this.navbarService.showNavbar$;

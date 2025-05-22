@@ -14,7 +14,6 @@ import { CourseService } from 'src/app/shared/services/firebase/course.service';
 @Component({
   selector: 'app-course-sidenav',
   templateUrl: './course-sidenav.component.html',
-  styleUrls: ['./course-sidenav.component.css'],
 })
 export class CourseSidenavComponent {
   sectionsWithLessons: any[] = [];

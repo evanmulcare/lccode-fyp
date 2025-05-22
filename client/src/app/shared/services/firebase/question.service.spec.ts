@@ -4,21 +4,8 @@ import { AuthService } from './auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { of } from 'rxjs';
 
-// Mocked Firebase Configuration
-const mockFirebaseConfig = {
-  apiKey: 'fake-api-key',
-  authDomain: 'fake-auth-domain',
-  databaseURL: 'fake-database-url',
-  projectId: 'fake-project-id',
-  storageBucket: 'fake-storage-bucket',
-  messagingSenderId: 'fake-sender-id',
-  appId: 'fake-app-id',
-  measurementId: 'fake-measurement-id',
-};
-
 class MockAngularFireAuth {
-  // Mock the required methods of AngularFireAuth
-  authState = of(null); // Mock authState observable
+  authState = of(null);
 }
 
 describe('QuestionService', () => {

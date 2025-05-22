@@ -4,7 +4,6 @@ import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-worksheet-question-card',
   templateUrl: './worksheet-question-card.component.html',
-  styleUrls: ['./worksheet-question-card.component.css'],
 })
 export class WorksheetQuestionCardComponent {
   @Input() question: any;

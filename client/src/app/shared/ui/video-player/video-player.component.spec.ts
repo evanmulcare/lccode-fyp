@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { VideoPlayerComponent } from './video-player.component';
 import { SafePipe } from '../../pipes/safe.pipe';
 
@@ -9,7 +8,7 @@ describe('VideoPlayerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [VideoPlayerComponent, SafePipe]
+      declarations: [VideoPlayerComponent, SafePipe],
     });
     fixture = TestBed.createComponent(VideoPlayerComponent);
     component = fixture.componentInstance;

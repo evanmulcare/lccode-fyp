@@ -7,7 +7,6 @@ import { QuestionService } from 'src/app/shared/services/firebase/question.servi
 @Component({
   selector: 'app-code-practice-single-view',
   templateUrl: './code-practice-single-view.component.html',
-  styleUrls: ['./code-practice-single-view.component.css'],
 })
 export class CodePracticeSingleViewComponent {
   icons = {
@@ -25,20 +24,22 @@ export class CodePracticeSingleViewComponent {
 
   async ngOnInit() {
     await this.loadCodeQuestion();
-    this.isQuestionCompleted = await this.questionService.isQuestionCompleted(this.questionId);
+    this.isQuestionCompleted = await this.questionService.isQuestionCompleted(
+      this.questionId
+    );
   }
 
   async loadCodeQuestion() {
     const questionId = this.route.snapshot.paramMap.get('question');
     if (!questionId) return;
-  
+
     const question = await this.questionService.getCodeQuestionById(questionId);
-  
+
     if (question) {
       this.questionData = question;
       this.questionId = question.id;
     }
-  }  
+  }
 
   async markAsComplete() {
     if (!this.questionData?.id) {

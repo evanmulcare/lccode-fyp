@@ -14,7 +14,6 @@ import { QuestionService } from 'src/app/shared/services/firebase/question.servi
 @Component({
   selector: 'app-practice-table',
   templateUrl: './practice-table.component.html',
-  styleUrls: ['./practice-table.component.css'],
 })
 export class PracticeTableComponent {
   questions: (ExamQuestion | CodeQuestion)[] = [];
@@ -45,7 +44,7 @@ export class PracticeTableComponent {
 
   async ngOnInit() {
     this.questions = [];
-    const loadedExamQuestions =  await this.questionService.loadExamQuestions();;
+    const loadedExamQuestions = await this.questionService.loadExamQuestions();
     const loadedCodeQuestions = await this.questionService.loadCodeQuestions();
     this.questions.push(...loadedExamQuestions, ...loadedCodeQuestions);
 
@@ -116,7 +115,7 @@ export class PracticeTableComponent {
       this.updatePaginatedQuestions();
     }
   }
-  
+
   navigateToQuestion(questionType: string, questionId: string) {
     if (questionType == 'Coding') {
       this.router.navigate(['/practice/questions/coding/', questionId]);

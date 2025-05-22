@@ -13,7 +13,6 @@ import {
 @Component({
   selector: 'app-course-chapter-item',
   templateUrl: './course-chapter-item.component.html',
-  styleUrls: ['./course-chapter-item.component.css'],
 })
 export class CourseChapterItemComponent implements OnInit {
   icons = {
